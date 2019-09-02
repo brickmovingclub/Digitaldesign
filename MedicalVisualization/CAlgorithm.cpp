@@ -27,12 +27,3 @@ void CAlgorithm::HoleRepair()
 {
 }
 
-
-CAlgorithm::CAlgorithm()
-{
-}
-
-
-CAlgorithm::~CAlgorithm()
-{
-}
