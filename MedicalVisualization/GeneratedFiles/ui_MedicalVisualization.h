@@ -33,16 +33,16 @@ public:
     {
         if (MedicalVisualizationClass->objectName().isEmpty())
             MedicalVisualizationClass->setObjectName(QString::fromUtf8("MedicalVisualizationClass"));
-        MedicalVisualizationClass->resize(588, 400);
+        MedicalVisualizationClass->resize(669, 459);
         centralWidget = new QWidget(MedicalVisualizationClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         qvtkWidget = new QVTKWidget(centralWidget);
         qvtkWidget->setObjectName(QString::fromUtf8("qvtkWidget"));
-        qvtkWidget->setGeometry(QRect(140, 110, 401, 211));
+        qvtkWidget->setGeometry(QRect(10, 10, 641, 401));
         MedicalVisualizationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MedicalVisualizationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 588, 23));
+        menuBar->setGeometry(QRect(0, 0, 669, 26));
         MedicalVisualizationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MedicalVisualizationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
