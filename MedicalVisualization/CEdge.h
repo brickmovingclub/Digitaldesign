@@ -1,6 +1,7 @@
 #pragma once
 #include "MyPoint.h"
 #include <iostream>
+
 using namespace std;
 class CEdge
 {
