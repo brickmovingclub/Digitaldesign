@@ -21,11 +21,10 @@ void CAlgorithm::ShowLeafNodes()
 
 void CAlgorithm::ThreeDimensionalReconstruction()
 {
+
 }
 
 void CAlgorithm::HoleRepair()
 {
 }
-
-
 
