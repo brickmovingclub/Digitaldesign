@@ -44,7 +44,7 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\HoleRepair\HoleRepair\PropertySheet.props" />
+    <Import Project="C:\Users\51245\Desktop\PropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -123,8 +123,12 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CEdge.cpp" />
+    <ClCompile Include="CTriangles.cpp" />
+    <ClCompile Include="FileOption.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MedicalVisualization.cpp" />
+    <ClCompile Include="MyPoint.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -132,6 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MedicalVisualization.h" />
+    <ClInclude Include="CEdge.h" />
+    <ClInclude Include="CTriangles.h" />
+    <ClInclude Include="FileOption.h" />
+    <ClInclude Include="MyPoint.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
