@@ -18,10 +18,5 @@ public:
 	void HoleRepair();
 };
 
-class CAlgorithm
-{
-public:
-	CAlgorithm();
-	~CAlgorithm();
-};
+
 
