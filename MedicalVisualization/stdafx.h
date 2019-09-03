@@ -2,7 +2,6 @@
 #include "MedicalVisualization.h"
 #include <QtWidgets/QApplication>
 
-
 //容器头文件
 #include <map>
 #include <list>
@@ -28,13 +27,11 @@
 #include <sstream>
 #include <iostream>
 #include "MyPoint.h"
-#include "CTriangles.h"
-#include "CEdge.h"
 
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkRenderingOpenGL2);
-VTK_MODULE_INIT(vtkInteractionStyle);
-VTK_MODULE_INIT(vtkRenderingFreeType);
+#include "CEdge.h"
+#include "FileOption.h"
+#include "CAlgorithm.h"
+
 // 算法头文件
 // 空间划分头文件
 #include <pcl/point_types.h>
@@ -52,7 +49,6 @@ VTK_MODULE_INIT(vtkRenderingFreeType);
 #include <stdio.h>
 #include <string.h>
 #include <vector>
-#include "CTriangles.h"
 #include "Vector3.h"
 #include <vtkRenderWindow.h>
 

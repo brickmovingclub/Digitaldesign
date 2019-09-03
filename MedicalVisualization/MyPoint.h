@@ -1,5 +1,5 @@
 #pragma once
-#include "CTriangles.h"
+
 class MyPoint
 {
 public:
@@ -7,7 +7,7 @@ public:
 	MyPoint(float a1, float b1, float c1);
 	~MyPoint();
 	//Ьиад
-
+	//vector<CTriangles>listCT;
 	float x, y, z, R, G, B;
 	
 	bool operator< (const MyPoint &a)const

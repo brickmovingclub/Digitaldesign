@@ -20,4 +20,7 @@ protected:
 
 private:
 	Ui::MedicalVisualizationClass ui;
+private slots:
+	void FillHoles();		//	¿×¶´ÐÞ²¹
+	void Reconstruction();	//	ÖØ½¨
 };

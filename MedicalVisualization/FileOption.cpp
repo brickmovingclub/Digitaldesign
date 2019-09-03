@@ -5,7 +5,7 @@ using namespace std;
 unsigned int unTriangles;
 char* memwriter;
 vector<MyPoint> pointList;
-
+using namespace std;
 
 FileOption::FileOption()
 {
@@ -118,9 +118,9 @@ bool FileOption::ReadBinary(const char * buffer)
 		CEdge e2(p2, p0);
 		e2.index = index;
 
-		listCEdge.push_back(e);
-		listCEdge.push_back(e1);
-		listCEdge.push_back(e2);
+		m_allListCEdgeBorder.push_back(e);
+		m_allListCEdgeBorder.push_back(e1);
+		m_allListCEdgeBorder.push_back(e2);
 		CTriangles b;
 		b.p0 = p0;
 		b.p1 = p1;
@@ -176,10 +176,11 @@ void FileOption::ReadAscFile(const char * cfilename)
 	int i = 0;
 	string us1, us2, us3;
 	//float x, y, z; //点的坐标
-	MyPoint a;
 	stringstream ss(buffer);
 	ss.get();
+
 	do {
+		MyPoint a;
 		ss >> a.x >> a.y >> a.z;
 		a.R = 1;
 		a.G = 1;
@@ -188,7 +189,7 @@ void FileOption::ReadAscFile(const char * cfilename)
 			break;
 
 		m_MapPoint.insert(std::pair<int, MyPoint>(i, a));
-		//cout << a.x << " " << a.y << " " << a.z << endl;
+		//std::cout <<"hello is "<< a.x << " " << a.y << " " << a.z << std::endl;
 		i++;
 	} while (1);
 	ios::sync_with_stdio(true);
@@ -221,7 +222,8 @@ string FileOption::AscToPcd()
 	// 读取点的信息
 	for (auto iter = m_MapPoint.begin(); iter != m_MapPoint.end(); iter++)
 	{
-		of << iter->second.x << " " << iter->second.y << " " << iter->second.z << " " << iter->second.R << " " << iter->second.G << " " << iter->second.B << std::endl;
+		of << iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
+		//std::cout<< iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
 	}
 	return fileName;
 }
