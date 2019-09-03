@@ -14,6 +14,11 @@ MyPoint::~MyPoint()
 {
 }
 
+void MyPoint::AddTriangles(int i)
+{
+	m_TrianglesList.push_back(i);
+}
+
 
 MyPoint::MyPoint()
 {

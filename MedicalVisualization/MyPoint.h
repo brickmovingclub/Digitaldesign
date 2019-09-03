@@ -1,5 +1,7 @@
 #pragma once
-#include "CTriangles.h"
+
+#include <vector>
+using namespace std;
 class MyPoint
 {
 public:
@@ -7,9 +9,10 @@ public:
 	MyPoint(float a1, float b1, float c1);
 	~MyPoint();
 	//Ьиад
-
+	 
+	vector<int> m_TrianglesList;
 	float x, y, z, R, G, B;
-	
+	void AddTriangles(int i);
 	bool operator< (const MyPoint &a)const
 	{
 		return (x < a.x) || ((x == a.x) && (y < a.y)) || ((x == a.x) && (y == a.y) && (z < a.z));
