@@ -32,6 +32,7 @@
 #include "FileOption.h"
 #include "CAlgorithm.h"
 
+
 // 算法头文件
 // 空间划分头文件
 #include <pcl/point_types.h>

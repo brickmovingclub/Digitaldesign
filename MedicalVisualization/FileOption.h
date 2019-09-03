@@ -1,5 +1,6 @@
 #pragma once
 //边的集合
+
 class FileOption
 {
 public:
@@ -7,9 +8,11 @@ public:
 	~FileOption();
 	//存储的面片信息
 	vector<CTriangles> m_CTrianglesData;
-	map<int, MyPoint>  m_MapPoint;
+	map<MyPoint, MyPoint> m_MapPoint;
+	map<int, MyPoint>  m_SortMapPoint;
 	list<CEdge>m_allListCEdgeBorder;
-
+	
+	
 	//功能函数
 	//读取二进制stl文件
 	int cpyint(const char*& p);

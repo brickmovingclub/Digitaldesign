@@ -94,6 +94,7 @@ bool FileOption::ReadBinary(const char * buffer)
 	memcpy(name, p, 80);
 	p += 80;
 	unTriangles = cpyint(p);
+	std::pair<std::map<MyPoint, MyPoint>::iterator, bool> ret;
 	std::cout << "unTriangles " << unTriangles << std::endl;
 	int index = 0;
 	for (i = 0; i < unTriangles; i++)
@@ -101,13 +102,35 @@ bool FileOption::ReadBinary(const char * buffer)
 		p += 12;//跳过头部法向量
 		j = 0;
 		MyPoint p0(cpyfloat(p), cpyfloat(p), cpyfloat(p));
-		pointList.push_back(p0);
+		p0.m_TrianglesList.push_back(i);
+		//pointList.push_back(p0);
+		ret = m_MapPoint.insert(std::pair<MyPoint, MyPoint>(p0, p0));
+		if (ret.second == false) 
+		{
+			map<MyPoint, MyPoint>::iterator it = m_MapPoint.find(p0);
+			it->second.AddTriangles(i);
+			
+		}
 		j++;
 		MyPoint p1(cpyfloat(p), cpyfloat(p), cpyfloat(p));
-		pointList.push_back(p1);
+		p1.m_TrianglesList.push_back(i);
+		ret = m_MapPoint.insert(std::pair<MyPoint, MyPoint>(p1, p1));
+		if (ret.second == false)
+		{
+			map<MyPoint, MyPoint>::iterator it = m_MapPoint.find(p1);
+			it->second.AddTriangles(i);
+		}
+		//pointList.push_back(p1);
 		j++;
 		MyPoint p2(cpyfloat(p), cpyfloat(p), cpyfloat(p));
-		pointList.push_back(p2);
+		p2.m_TrianglesList.push_back(i);
+		ret = m_MapPoint.insert(std::pair<MyPoint, MyPoint>(p2, p2));
+		if (ret.second == false)
+		{
+			map<MyPoint, MyPoint>::iterator it = m_MapPoint.find(p2);
+			it->second.AddTriangles(i);
+		}
+		//pointList.push_back(p2);
 		// 定义边的信息
 
 		CEdge e(p0, p1);
@@ -129,6 +152,11 @@ bool FileOption::ReadBinary(const char * buffer)
 		m_CTrianglesData.push_back(b);
 		index++;
 		p += 2;//跳过尾部标志
+	}
+	i = 0;
+	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
+	{
+		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
 	}
 	return false;
 }
@@ -188,8 +216,8 @@ void FileOption::ReadAscFile(const char * cfilename)
 		if (a.x == NULL)
 			break;
 
-		m_MapPoint.insert(std::pair<int, MyPoint>(i, a));
-		//std::cout <<"hello is "<< a.x << " " << a.y << " " << a.z << std::endl;
+		m_SortMapPoint.insert(std::pair<int, MyPoint>(i, a));
+		//cout << a.x << " " << a.y << " " << a.z << endl;
 		i++;
 	} while (1);
 	ios::sync_with_stdio(true);
@@ -199,7 +227,7 @@ void FileOption::ReadAscFile(const char * cfilename)
 //.asc文件转Pcd文件
 string FileOption::AscToPcd()
 {
-	if (m_MapPoint.size() == 0)
+	if (m_SortMapPoint.size() == 0)
 		return 0;
 	string fileName = "bunny.pcd";
 	ofstream of(fileName.c_str());
@@ -215,12 +243,12 @@ string FileOption::AscToPcd()
 	of << "SIZE 4 4 4 " << std::endl;
 	of << "TYPE F F F " << std::endl;
 	of << "COUNT 1 1 1 " << std::endl;
-	of << "WIDTH " << m_MapPoint.size() << std::endl;
+	of << "WIDTH " << m_SortMapPoint.size() << std::endl;
 	of << "HEIGHT 1" << std::endl;
-	of << "POINTS " << m_MapPoint.size() << std::endl;
+	of << "POINTS " << m_SortMapPoint.size() << std::endl;
 	of << "DATA ascii" << std::endl;
 	// 读取点的信息
-	for (auto iter = m_MapPoint.begin(); iter != m_MapPoint.end(); iter++)
+	for (auto iter = m_SortMapPoint.begin(); iter != m_SortMapPoint.end(); iter++)
 	{
 		of << iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
 		//std::cout<< iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
