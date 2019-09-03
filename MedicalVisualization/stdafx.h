@@ -21,8 +21,11 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include "CEdge.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <vector>
+#include "CTriangles.h"
+#include "Vector3.h"
 #include <vtkRenderWindow.h>
 
