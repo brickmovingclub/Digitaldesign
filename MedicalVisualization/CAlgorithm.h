@@ -22,7 +22,7 @@ public:
 	void ShowLeafNodes();
 
 // ÈýÎ¬ÖØ½¨
-	pcl::PolygonMesh ThreeDimensionalReconstruction(string m_fileName);
+	pcl::PolygonMesh ThreeDimensionalReconstruction();
 
 // ¿×¶´ÐÞ²¹
 	void HoleRepair(vector<CEdge>m_borderEdgeList);

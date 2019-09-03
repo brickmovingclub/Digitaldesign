@@ -10,8 +10,10 @@
 #define UI_MEDICALVISUALIZATION_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -23,9 +25,12 @@ QT_BEGIN_NAMESPACE
 class Ui_MedicalVisualizationClass
 {
 public:
+    QAction *actionFile_holes;
+    QAction *actionReconstruction;
     QWidget *centralWidget;
     QVTKWidget *qvtkWidget;
     QMenuBar *menuBar;
+    QMenu *menuFix;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -33,16 +38,22 @@ public:
     {
         if (MedicalVisualizationClass->objectName().isEmpty())
             MedicalVisualizationClass->setObjectName(QString::fromUtf8("MedicalVisualizationClass"));
-        MedicalVisualizationClass->resize(669, 459);
+        MedicalVisualizationClass->resize(1095, 736);
+        actionFile_holes = new QAction(MedicalVisualizationClass);
+        actionFile_holes->setObjectName(QString::fromUtf8("actionFile_holes"));
+        actionReconstruction = new QAction(MedicalVisualizationClass);
+        actionReconstruction->setObjectName(QString::fromUtf8("actionReconstruction"));
         centralWidget = new QWidget(MedicalVisualizationClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         qvtkWidget = new QVTKWidget(centralWidget);
         qvtkWidget->setObjectName(QString::fromUtf8("qvtkWidget"));
-        qvtkWidget->setGeometry(QRect(10, 10, 641, 401));
+        qvtkWidget->setGeometry(QRect(0, -40, 1091, 711));
         MedicalVisualizationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MedicalVisualizationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 669, 26));
+        menuBar->setGeometry(QRect(0, 0, 1095, 26));
+        menuFix = new QMenu(menuBar);
+        menuFix->setObjectName(QString::fromUtf8("menuFix"));
         MedicalVisualizationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MedicalVisualizationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -51,7 +62,13 @@ public:
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MedicalVisualizationClass->setStatusBar(statusBar);
 
+        menuBar->addAction(menuFix->menuAction());
+        menuFix->addAction(actionFile_holes);
+        menuFix->addAction(actionReconstruction);
+
         retranslateUi(MedicalVisualizationClass);
+        QObject::connect(actionFile_holes, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(FillHoles()));
+        QObject::connect(actionReconstruction, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(Reconstruction()));
 
         QMetaObject::connectSlotsByName(MedicalVisualizationClass);
     } // setupUi
@@ -59,6 +76,9 @@ public:
     void retranslateUi(QMainWindow *MedicalVisualizationClass)
     {
         MedicalVisualizationClass->setWindowTitle(QApplication::translate("MedicalVisualizationClass", "MedicalVisualization", nullptr));
+        actionFile_holes->setText(QApplication::translate("MedicalVisualizationClass", "File holes", nullptr));
+        actionReconstruction->setText(QApplication::translate("MedicalVisualizationClass", "Reconstruction", nullptr));
+        menuFix->setTitle(QApplication::translate("MedicalVisualizationClass", "Fix", nullptr));
     } // retranslateUi
 
 };

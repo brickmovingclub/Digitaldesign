@@ -4,6 +4,7 @@
 using namespace std;
 // 点云数据
 pcl::PointCloud<pcl::PointXYZ>::Ptr  cloud(new pcl::PointCloud<pcl::PointXYZ>);
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles(new pcl::PointCloud<pcl::PointXYZ>);
 
 
 CAlgorithm::CAlgorithm()
@@ -37,14 +38,10 @@ void CAlgorithm::ShowLeafNodes()
 }
 
 // 三维重建
-pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction(string m_fileName)
+pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 {
 	pcl::PolygonMesh triangles;//创建多边形网格，用于存储结果
-	if (pcl::io::loadPCDFile<pcl::PointXYZ>(m_fileName, *cloud) == -1)
-	{
-		PCL_ERROR("Couldn't read file bunny.pcd\n");
-		return triangles;
-	}
+
 	//Normal 法向量
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
 	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
@@ -80,7 +77,11 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction(string m_fileName)
 	std::cout << "************" << triangles.polygons.size() << std::endl;
 	//保存网格图
 	pcl::io::saveVTKFile("bunny.vtk", triangles);//保存为vtk文件
+	
 	//增加顶点信息
+		//增加顶点信息
+	std::vector<int> parts = gp3.getPartIDs();
+	std::vector<int> states = gp3.getPointStates();
 	return triangles;
 }
 

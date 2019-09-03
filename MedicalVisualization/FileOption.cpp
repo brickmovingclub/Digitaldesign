@@ -5,7 +5,7 @@ using namespace std;
 unsigned int unTriangles;
 char* memwriter;
 vector<MyPoint> pointList;
-
+using namespace std;
 
 FileOption::FileOption()
 {
@@ -347,10 +347,11 @@ void FileOption::ReadAscFile(const char * cfilename)
 	int i = 0;
 	string us1, us2, us3;
 	//float x, y, z; //点的坐标
-	MyPoint a;
 	stringstream ss(buffer);
 	ss.get();
+
 	do {
+		MyPoint a;
 		ss >> a.x >> a.y >> a.z;
 		a.R = 1;
 		a.G = 1;
@@ -392,7 +393,8 @@ string FileOption::AscToPcd()
 	// 读取点的信息
 	for (auto iter = m_SortMapPoint.begin(); iter != m_SortMapPoint.end(); iter++)
 	{
-		of << iter->second.x << " " << iter->second.y << " " << iter->second.z << " " << iter->second.R << " " << iter->second.G << " " << iter->second.B << std::endl;
+		of << iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
+		//std::cout<< iter->second.x << " " << iter->second.y << " " << iter->second.z << std::endl;
 	}
 	return fileName;
 }
