@@ -6,4 +6,5 @@ MedicalVisualization::MedicalVisualization(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+
 }

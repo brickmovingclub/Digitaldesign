@@ -1,4 +1,5 @@
 #pragma once
+#include "CTriangles.h"
 class MyPoint
 {
 public:
@@ -8,6 +9,7 @@ public:
 	//Ьиад
 
 	float x, y, z, R, G, B;
+	
 	bool operator< (const MyPoint &a)const
 	{
 		return (x < a.x) || ((x == a.x) && (y < a.y)) || ((x == a.x) && (y == a.y) && (z < a.z));

@@ -48,10 +48,10 @@
     <ClCompile Include="MyPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileOption.cpp">
+    <ClCompile Include="CAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CAlgorithm.cpp">
+    <ClCompile Include="FileOption.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector3.cpp">
@@ -71,10 +71,10 @@
     <ClInclude Include="MyPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileOption.h">
+    <ClInclude Include="CAlgorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CAlgorithm.h">
+    <ClInclude Include="FileOption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
