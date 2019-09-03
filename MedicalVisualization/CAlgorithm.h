@@ -1,11 +1,17 @@
 #pragma once
 #include <string>
+typedef Eigen::Vector3d Point1;
 using namespace std;
 class CAlgorithm
 {
 public:
 	CAlgorithm();
 	~CAlgorithm();
+
+	vector<CTriangles> Triangleslist;
+	// 存储候选点
+	MyPoint frontPoint;
+	MyPoint rearPoint;
 // pcd数据读取
 	void ReadPclFile(string m_fileName);
 
@@ -19,6 +25,21 @@ public:
 	pcl::PolygonMesh ThreeDimensionalReconstruction(string m_fileName);
 
 // 孔洞修补
-	void HoleRepair();
+	void HoleRepair(vector<CEdge>m_borderEdgeList);
+
+// 孔洞边界获取
+	map<int, vector<CEdge>> GetHole(vector<CEdge>m_borderEdgeList);
+// 计算两条边的夹角
+	double GetAngleRear(CEdge currentEdge, CEdge otherEdge);
+	double getDegAngle(Point1 p1, Point1 p2, Point1 p3);
+// 获取二面角
+	double GetAngle(CTriangles ct1, CTriangles ct2);
+// 获取候选点
+	void GettingCandidatePoints(CEdge c1, vector<CEdge>active);
+// 获取法矢
+	vector<double> getNormal(MyPoint p0, MyPoint p1, MyPoint p2);
+// 面积计算
+	double GetArea(CTriangles Triang1);
+
 };
 
