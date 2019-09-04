@@ -192,7 +192,6 @@ void MedicalVisualization::DrawDomainPoints()
 
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
-	renderWindow->SetSize(1000, 800);
 
 	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renderWindow);
@@ -201,7 +200,8 @@ void MedicalVisualization::DrawDomainPoints()
 	iren->SetInteractorStyle(style);
 
 	iren->Initialize();
-	iren->Start();
+	ui.qvtkWidget->SetRenderWindow(iren->GetRenderWindow());
+	ui.qvtkWidget->show();
 }
 
 // 绘制叶子节点
@@ -286,9 +286,15 @@ void MedicalVisualization::DrawLeafNodes()
 	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
 
+	vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
+	renderWindowInteractor->SetInteractorStyle(style);
+
 	renderer->AddActor(lineActor);
 	renderWindow->Render();
 
 	renderWindowInteractor->Initialize();
-	renderWindowInteractor->Start();
+	//renderWindowInteractor->Start();
+
+	ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	ui.qvtkWidget->show();
 }
