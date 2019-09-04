@@ -31,25 +31,7 @@
 #include "CEdge.h"
 #include "FileOption.h"
 #include "CAlgorithm.h"
-#include <vtkPolyData.h>
-#include <vtkSTLReader.h>
-#include <vtkPLYReader.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkCamera.h>
-#include <vtkConeSource.h>
-#include <vtkCellArray.h>
-#include <vtkFloatArray.h>
-#include "vtkPointData.h"
-#include "vtkPoints.h"
-#include "vtkPolyData.h"
-#include "vtkPolyDataMapper.h"
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkLookupTable.h>
+
 
 
 // 算法头文件
@@ -87,3 +69,9 @@
 #include <vtkProperty.h>
 #include <vtkPolyLine.h>
 
+#include "vtkCamera.h"
+#include "vtkConeSource.h"
+#include "vtkFloatArray.h"
+#include "vtkPointData.h"
+#include "vtkPoints.h"
+#include <vtkLookupTable.h>
