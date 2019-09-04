@@ -8,9 +8,6 @@ int main(int argc, char *argv[])
 	w.show();
 	//≤‚ ‘
 	FileOption ab;
-	
-	ab.ReadAscllStlFile("bunny.stl");
-	
 	return a.exec();
 
 }

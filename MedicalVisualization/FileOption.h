@@ -12,7 +12,6 @@ public:
 	map<int, MyPoint>  m_SortMapPoint;
 	vector<CEdge>m_allListCEdgeBorder;
 	
-	
 	//功能函数
 	//读取ASCLL码STL文件
 	bool ReadAscllStlFile(const char *cfilename);
@@ -27,8 +26,11 @@ public:
 	void ReadAscFile(const char *cfilename); 
 	//.asc文件转Pcd文件
 	string AscToPcd();
+
 	//把划分好的三角面片另存为.ply文件
 	void SaveAsPLY(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles, pcl::PolygonMesh triangles); 
+	//另存为ply格式文件
+	void SavePly();
 
 };
 
