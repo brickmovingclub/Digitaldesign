@@ -1,6 +1,6 @@
 #pragma once
 //边的集合
-
+#include "Vector3.h"
 class FileOption
 {
 public:
@@ -11,8 +11,13 @@ public:
 	map<MyPoint, MyPoint> m_MapPoint;
 	map<int, MyPoint>  m_SortMapPoint;
 	vector<CEdge>m_allListCEdgeBorder;
+	//法向量
+	map<int, Vector3> normal;
 	
 	//功能函数
+	//读取ply格式文件
+	bool ReadPlyFile(const char *cfilename);
+	bool ReadPly(const char *buffer);
 	//读取ASCLL码STL文件
 	bool ReadAscllStlFile(const char *cfilename);
 	bool ReadAscllStl(const char *buffer);//读stl文件
@@ -31,6 +36,8 @@ public:
 	void SaveAsPLY(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles, pcl::PolygonMesh triangles); 
 	//另存为ply格式文件
 	void SavePly();
+	//另存为stl格式文件
+	void SaveAsStl();
 
 };
 

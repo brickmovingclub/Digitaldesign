@@ -5,10 +5,10 @@ MedicalVisualization::MedicalVisualization(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	/*viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+	viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
 	ui.qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
 	viewer->setupInteractor(ui.qvtkWidget->GetInteractor(), ui.qvtkWidget->GetRenderWindow());
-	ui.qvtkWidget->update();*/
+	ui.qvtkWidget->update();
 }
 
 // 三维重建
@@ -86,7 +86,7 @@ void MedicalVisualization::FillHoles()
 	FileOption fo;
 	// 算法
 	CAlgorithm ca;
-	fo.ReadAscllStlFile("三维重建.stl");
+	fo.ReadAscllStlFile("bunny.stl");
 
 	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
 	fo.SavePly();
