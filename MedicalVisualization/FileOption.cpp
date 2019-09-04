@@ -11,11 +11,9 @@ FileOption::FileOption()
 {
 }
 
-
 FileOption::~FileOption()
 {
 }
-
 //功能函数
 //读取ASCLL码STL文件
 bool FileOption::ReadAscllStlFile(const char * cfilename)
@@ -25,14 +23,12 @@ bool FileOption::ReadAscllStlFile(const char * cfilename)
 	char *buffer;
 	size_t result;
 
-
 	//打开文件
 	fopen_s(&pfile, cfilename, "rb");
 	if (pfile == NULL)
 	{
 		fputs("file error", stderr);
 		exit(1);
-
 	}
 	//获取文件大小
 	fseek(pfile, 0, SEEK_END);
@@ -115,10 +111,6 @@ bool FileOption::ReadAscllStl(const char * buffer)
 			b.x = x;
 			b.y = y;
 			b.z = z;
-
-
-
-
 			//存节点数据
 			//判断map容器中是否已经存在现在要存入的数据
 			//pointlist1.insert(std::pair<mypoint, int>(b, 0));	//获取map.insert的返回值
@@ -134,10 +126,6 @@ bool FileOption::ReadAscllStl(const char * buffer)
 			b.m_TrianglesList.clear();
 
 			//cout << pointlist.begin()->first.x << endl;
-			
-			
-
-
 		}
 		CEdge e(a.p0, a.p1);
 		CEdge e1(a.p1, a.p2);
@@ -151,7 +139,7 @@ bool FileOption::ReadAscllStl(const char * buffer)
 
 		getline(ss, useless);
 		getline(ss, useless);
-		getline(ss, useless);
+		//getline(ss, useless);
 	} while (1);
 	std::cout <<"边的数量：" <<m_allListCEdgeBorder.size() << std::endl;
 	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)

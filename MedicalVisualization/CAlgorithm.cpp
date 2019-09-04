@@ -153,7 +153,7 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 	std::cout << "************" << triangles.polygons.size() << std::endl;
 	//保存网格图
 	pcl::io::saveVTKFile("bunny.vtk", triangles);//保存为vtk文件
-	
+
 	//增加顶点信息
 		//增加顶点信息
 	std::vector<int> parts = gp3.getPartIDs();
