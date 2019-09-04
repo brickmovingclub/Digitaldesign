@@ -306,6 +306,7 @@ bool FileOption::ReadBinary(const char * buffer)
 		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
 		i++;
 	}
+
 	return false;
 }
 

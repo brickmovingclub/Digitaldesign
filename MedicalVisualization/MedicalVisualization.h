@@ -22,5 +22,7 @@ private:
 	Ui::MedicalVisualizationClass ui;
 private slots:
 	void FillHoles();		//	孔洞修补
-	void Reconstruction();	//	重建
+	void Reconstruction();	//	重建	
+	void DrawDomainPoints(); // 查找N维领域点，并高亮显示
+	void DrawLeafNodes(); // 绘制叶子节点
 };
