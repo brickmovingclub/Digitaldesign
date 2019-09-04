@@ -101,13 +101,13 @@
     <ResourceCompile Include="MedicalVisualization.rc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="vtkWidget.ui">
+    <QtUic Include="MedicalVisualization.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="CStackWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MedicalVisualization.ui">
+    <QtUic Include="vtkWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
