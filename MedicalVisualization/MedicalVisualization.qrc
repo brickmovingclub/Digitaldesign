@@ -1,4 +1,14 @@
 <RCC>
-    <qresource prefix="MedicalVisualization">
+    <qresource prefix="/MedicalVisualization">
+        <file>Image/a.png</file>
+        <file>Image/copy.png</file>
+        <file>Image/cut.png</file>
+        <file>Image/document.png</file>
+        <file>Image/icon.png</file>
+        <file>Image/new.png</file>
+        <file>Image/open.png</file>
+        <file>Image/paste.png</file>
+        <file>Image/save.png</file>
+        <file>Image/效果图.png</file>
     </qresource>
 </RCC>
