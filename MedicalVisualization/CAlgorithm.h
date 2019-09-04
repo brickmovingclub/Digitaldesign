@@ -25,7 +25,7 @@ public:
 	pcl::PolygonMesh ThreeDimensionalReconstruction();
 
 // ¿×¶´ÐÞ²¹
-	void HoleRepair(vector<CEdge>m_borderEdgeList);
+	vector<CTriangles> HoleRepair(vector<CEdge>m_borderEdgeList, vector<CTriangles> m_CTrianglesData);
 
 // ¿×¶´±ß½ç»ñÈ¡
 	map<int, vector<CEdge>> GetHole(vector<CEdge>m_borderEdgeList);

@@ -146,7 +146,7 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 	std::cout << "************" << triangles.polygons.size() << std::endl;
 	//保存网格图
 	pcl::io::saveVTKFile("bunny.vtk", triangles);//保存为vtk文件
-	
+
 	//增加顶点信息
 		//增加顶点信息
 	std::vector<int> parts = gp3.getPartIDs();
@@ -155,8 +155,9 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 }
 
 // 孔洞修补
-void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
+vector<CTriangles> CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList, vector<CTriangles> m_CTrianglesData) 
 {
+	std::cout <<"之前面的大小：" <<m_CTrianglesData.size() << std::endl;
 	// 获取孔洞边
 	map<int, vector<CEdge>>m_holeList;
 	// 排序后的孔洞边
@@ -167,6 +168,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 
 	int m_count = 0;
 	m_holeList = GetHole(m_borderEdgeList);
+
 	
 	// 补洞之前对每一个洞的list进行排序
 	for (auto it = m_holeList.begin();it != m_holeList.end();it++)
@@ -216,8 +218,9 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 		}
 		m_sortHoleList.insert(pair<int, vector<CEdge>>(m_count++, m_activeCEdgeList));
 	}
-
 	// 补洞算法
+	std::cout << "孔洞的个数 " << m_sortHoleList.size() << std::endl;
+
 	for (auto it = m_sortHoleList.begin();it != m_sortHoleList.end();it++)
 	{
 		vector<CEdge>m_activeCEdgeList=it->second;
@@ -230,7 +233,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 			m_listResult.push_back(currentEdge);
 			// 当前面
 			CTriangles ct(m_activeCEdgeList[0].startNode, m_activeCEdgeList[0].endNode, m_activeCEdgeList[1].endNode);
-			Triangleslist.push_back(ct);
+			m_CTrianglesData.push_back(ct);
 			// 删除最小角的边
 			m_activeCEdgeList.erase(m_activeCEdgeList.begin());
 
@@ -272,7 +275,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 					ct = ctFront;
 					std::cout << "生成后的边： " << std::endl;
 					currentEdge.ToString();
-					Triangleslist.push_back(ctFront);
+					m_CTrianglesData.push_back(ctFront);
 
 				}
 				else if (A < B)
@@ -286,7 +289,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 					currentEdge.endNode = rearPoint;
 					ct = ctRear;
 					std::cout << "生成后的边： " << std::endl;
-					Triangleslist.push_back(ctRear);
+					m_CTrianglesData.push_back(ctRear);
 
 					currentEdge.ToString();
 
@@ -303,7 +306,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 						currentEdge.endNode = currentEdge.endNode;
 						ct = ctFront;
 						std::cout << "生成后的边： " << std::endl;
-						Triangleslist.push_back(ctFront);
+						m_CTrianglesData.push_back(ctFront);
 
 						currentEdge.ToString();
 					}
@@ -320,7 +323,7 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 						std::cout << "生成后的边： " << std::endl;
 
 						currentEdge.ToString();
-						Triangleslist.push_back(ctRear);
+						m_CTrianglesData.push_back(ctRear);
 
 					}
 
@@ -338,14 +341,11 @@ void CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList)
 					break;
 
 				}
-
-
-
 			} while (m_activeCEdgeList.size() > 2);
-		
+			std::cout << "后前面的大小：" << m_CTrianglesData.size() << std::endl;
 		}
 	}
-
+	return m_CTrianglesData;
 }
 
 // 获取孔洞边界
@@ -366,7 +366,8 @@ map<int, vector<CEdge>> CAlgorithm::GetHole(vector<CEdge>m_borderEdgeList)
 	}
 	// 获取每个孔洞
 	int i = 0;
-	while (!m_tempList.empty())
+	int m_countEdge = m_tempList.size();
+	while (m_countEdge>0)
 	{
 		// 代理
 		vector<CEdge>m_tempListCEdge=m_tempList;
@@ -384,15 +385,17 @@ map<int, vector<CEdge>> CAlgorithm::GetHole(vector<CEdge>m_borderEdgeList)
 			{
 				for (int i = 0;i < m_tempListCEdge.size(); i++)
 				{
-					if ((m_tempListCEdge[i].startNode == my) && ((!(m_tempListCEdge[i].startNode == c1.startNode)) && (!(m_tempListCEdge[i].endNode == c1.endNode))))
-					{
-						//cout << "点 ： " << my.x << " "<<my.y<<" "<<my.z<<endl;
+					if(m_tempListCEdge[i].flag==0){
+						if ((m_tempListCEdge[i].startNode == my) && ((!(m_tempListCEdge[i].startNode == c1.startNode)) && (!(m_tempListCEdge[i].endNode == c1.endNode))))
+						{
+							//cout << "点 ： " << my.x << " "<<my.y<<" "<<my.z<<endl;
 
-						result.push_back(m_tempListCEdge[i]);
+							result.push_back(m_tempListCEdge[i]);
 
-						c1 = m_tempListCEdge[i];
-						my = c1.endNode;
-						break;
+							c1 = m_tempListCEdge[i];
+							my = c1.endNode;
+							break;
+						}
 					}
 				}
 			}
@@ -400,16 +403,32 @@ map<int, vector<CEdge>> CAlgorithm::GetHole(vector<CEdge>m_borderEdgeList)
 		// 从主集合中删除已经找洞成功的边
 		// 暂存集合
 		vector<CEdge>m_tempCEdge;
-		for (auto it = result.begin();it != result.end();)
+		
+		for (auto it = result.begin();it != result.end();it++)
 		{
 			CEdge e = *it;
-			if (count(m_tempListCEdge.begin(), m_borderEdgeList.end(), e) >= 1)
+			for (auto itt = m_tempList.begin();itt != m_tempList.end();itt++)
+			{
+				if (e.isEqual(*itt))
+				{
+					itt->flag = 1;
+					m_countEdge--;
+					break;
+				}
+			}
+		}
+		for (auto it = m_tempList.begin();it != m_tempList.end();)
+		{
+			CEdge e = *it;
+			if (e.flag==1)
 			{
 				it++;
+				//cout << "x=: " << e.startNode.x << "y=: " << e.startNode.y << "z= " << e.startNode.z << endl;
 			}
 			else
 			{
-				m_tempCEdge.push_back(*it);
+				m_tempCEdge.push_back(e);
+				it++;
 			}
 		}
 		m_holeList.insert(pair<int, vector<CEdge>>(i++, result));
