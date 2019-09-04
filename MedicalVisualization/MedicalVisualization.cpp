@@ -86,7 +86,7 @@ void MedicalVisualization::FillHoles()
 	FileOption fo;
 	// 算法
 	CAlgorithm ca;
-	fo.ReadAscllStlFile("三维重建.stl");
+	fo.ReadAscllStlFile("bunny.stl");
 
 	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
 	fo.SavePly();

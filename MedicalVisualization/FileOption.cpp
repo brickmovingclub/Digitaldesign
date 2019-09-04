@@ -139,7 +139,7 @@ bool FileOption::ReadAscllStl(const char * buffer)
 
 		getline(ss, useless);
 		getline(ss, useless);
-		//getline(ss, useless);
+		getline(ss, useless);
 	} while (1);
 	std::cout <<"±ßµÄÊýÁ¿£º" <<m_allListCEdgeBorder.size() << std::endl;
 	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
