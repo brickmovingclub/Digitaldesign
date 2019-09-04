@@ -57,6 +57,9 @@
     <ClCompile Include="Vector3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CTableView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -85,11 +88,9 @@
     <QtMoc Include="MedicalVisualization.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="MedicalVisualization.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
+    <QtMoc Include="CTableView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MedicalVisualization.qrc">
@@ -98,5 +99,16 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MedicalVisualization.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="vtkWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CStackWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MedicalVisualization.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

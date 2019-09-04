@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "CTriangles.h"
+
 #include "CAlgorithm.h"
 
 using namespace std;

@@ -1,6 +1,7 @@
 #pragma once
 //±ßµÄ¼¯ºÏ
-#include "Vector3.h"
+//#include "Vector3.h"
+class CTriangles;
 class FileOption
 {
 public:

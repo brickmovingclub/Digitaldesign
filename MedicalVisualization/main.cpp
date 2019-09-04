@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "FileOption.h"
+#include "MedicalVisualization.h"
 
 int main(int argc, char *argv[])
 {
