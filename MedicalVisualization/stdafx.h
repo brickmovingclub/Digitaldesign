@@ -28,9 +28,8 @@
 #include <iostream>
 #include "MyPoint.h"
 
-#include "CEdge.h"
-#include "FileOption.h"
-#include "CAlgorithm.h"
+#include <vtkVersion.h>
+#include <vtkPlaneSource.h>
 #include <vtkPolyData.h>
 #include <vtkSTLReader.h>
 #include <vtkPLYReader.h>
@@ -50,6 +49,11 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLookupTable.h>
+
+#include "CEdge.h"
+#include "FileOption.h"
+#include "CAlgorithm.h"
+
 
 
 // 算法头文件
@@ -87,3 +91,9 @@
 #include <vtkProperty.h>
 #include <vtkPolyLine.h>
 
+#include "vtkCamera.h"
+#include "vtkConeSource.h"
+#include "vtkFloatArray.h"
+#include "vtkPointData.h"
+#include "vtkPoints.h"
+#include <vtkLookupTable.h>

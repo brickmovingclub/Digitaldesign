@@ -2,11 +2,12 @@
 #include "stdafx.h"
 #include <QtWidgets/QMainWindow>
 #include "ui_MedicalVisualization.h"
-#include "vtkAutoInit.h"
 
+#include <vtkAutoInit.h>
 VTK_MODULE_INIT(vtkRenderingOpenGL2);
-
 VTK_MODULE_INIT(vtkInteractionStyle);
+VTK_MODULE_INIT(vtkRenderingFreeType);
+
 class MedicalVisualization : public QMainWindow
 {
 	Q_OBJECT
@@ -20,6 +21,7 @@ protected:
 
 private:
 	Ui::MedicalVisualizationClass ui;
+
 private slots:
 	void FillHoles();		//	¿×¶´ÐÞ²¹
 	void Reconstruction();	//	ÖØ½¨	
