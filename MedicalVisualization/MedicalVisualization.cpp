@@ -5,10 +5,10 @@ MedicalVisualization::MedicalVisualization(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+	/*viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
 	ui.qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
 	viewer->setupInteractor(ui.qvtkWidget->GetInteractor(), ui.qvtkWidget->GetRenderWindow());
-	ui.qvtkWidget->update();
+	ui.qvtkWidget->update();*/
 }
 
 // 三维重建
@@ -58,22 +58,62 @@ void MedicalVisualization::FillHoles()
 void MedicalVisualization::DrawDomainPoints()
 {
 	// TODO: 在此处添加实现代码.
+	//绘制模型
+	FileOption file;
+	file.Bin2ToStl();
+	std::map<int, MyPoint> points = file.m_SortMapPoint;
+	std::vector<CTriangles> triangles = file.m_CTrianglesData;
+
+	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
+	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
+
+	int count = 0;
+	for (auto it = triangles.begin(); it != triangles.end(); it++, count++)
+	{
+		double p0[3] = { it->p0.x, it->p0.y, it->p0.z };
+		double p1[3] = { it->p1.x, it->p1.y, it->p1.z };
+		double p2[3] = { it->p2.x, it->p2.y, it->p2.z };
+		pts->InsertNextPoint(p0);//ID = 3 * count + 0;
+		pts->InsertNextPoint(p1);//ID = 3 * count + 1;
+		pts->InsertNextPoint(p2);//ID = 3 * count + 2;
+
+		vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
+		polyLine->GetPointIds()->SetNumberOfIds(4);
+		for (unsigned int i = 0; i < 3; i++)
+			polyLine->GetPointIds()->SetId(i, count * 3 + i);
+		polyLine->GetPointIds()->SetId(3, count * 3 + 0);
+		lines->InsertNextCell(polyLine);
+	}
+
+	vtkSmartPointer<vtkPolyData> linesPolyData = vtkSmartPointer<vtkPolyData>::New();
+	linesPolyData->SetPoints(pts);
+	linesPolyData->SetLines(lines);
+
+	vtkSmartPointer<vtkPolyDataMapper> linesMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	linesMapper->SetInputData(linesPolyData);
+
+	vtkSmartPointer<vtkActor> lineActor = vtkSmartPointer<vtkActor>::New();
+	lineActor->SetMapper(linesMapper);
+	lineActor->GetProperty()->SetColor(1, 1, 1);
+	lineActor->GetProperty()->SetLineWidth(1);
+
+	//绘制领域点
 	int pointSerailNumber = 0, n = 5;
-	std::set<MyPoint> neighborPoints = CAlgorithm::KOrderDomain(pointSerailNumber, n);
+	std::set<MyPoint> neighborPoints = CAlgorithm::KOrderDomain(pointSerailNumber, n, points, triangles);
 	std::cout << "neighborPoints:" << neighborPoints.size() << std::endl;
 
-	//高亮显示点
-	vtkPoints *points = vtkPoints::New();
+	//高亮显示领域点
+	vtkPoints *domainPoints = vtkPoints::New();
 	vtkCellArray *cells = vtkCellArray::New();
 	vtkIdType idtype;
 	for (auto it = neighborPoints.begin(); it != neighborPoints.end(); it++)
 	{
-		idtype = points->InsertNextPoint(it->x, it->y, it->z);
+		idtype = domainPoints->InsertNextPoint(it->x, it->y, it->z);
 		cells->InsertNextCell(1, &idtype);
 	}
 
 	vtkPolyData *polyData = vtkPolyData::New();
-	polyData->SetPoints(points);
+	polyData->SetPoints(domainPoints);
 	polyData->SetVerts(cells);
 
 	vtkPolyDataMapper *mapper = vtkPolyDataMapper::New();
@@ -81,18 +121,38 @@ void MedicalVisualization::DrawDomainPoints()
 
 	vtkActor *actor = vtkActor::New();
 	actor->SetMapper(mapper);
-
 	//设置颜色与点大小
 	actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
-	actor->GetProperty()->SetPointSize(1);
+	actor->GetProperty()->SetPointSize(5);
 
+	//绘制中心点
+	vtkPoints *centerPoints = vtkPoints::New();
+	vtkCellArray *centerCells = vtkCellArray::New();
+	idtype = centerPoints->InsertNextPoint(points[pointSerailNumber].x, points[pointSerailNumber].y, points[pointSerailNumber].z);
+	centerCells->InsertNextCell(1, &idtype);
+
+	vtkPolyData *polyDataCenter = vtkPolyData::New();
+	polyDataCenter->SetPoints(centerPoints);
+	polyDataCenter->SetVerts(centerCells);
+
+	vtkPolyDataMapper *mapperCenter = vtkPolyDataMapper::New();
+	mapperCenter->SetInputData(polyDataCenter);
+
+	vtkActor *actorCenter = vtkActor::New();
+	actorCenter->SetMapper(mapperCenter);
+	//设置颜色与点大小
+	actorCenter->GetProperty()->SetColor(1.0, 0.0, 0.0);
+	actorCenter->GetProperty()->SetPointSize(10);
+
+	//显示
 	vtkRenderer *renderer = vtkRenderer::New();
+	renderer->AddActor(lineActor);
 	renderer->AddActor(actor);
-	// 设置背景颜色
-	// renderer->SetBackground(1, 1, 1);
+	renderer->AddActor(actorCenter);
 
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
+	renderWindow->SetSize(1000, 800);
 
 	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(renderWindow);
@@ -110,11 +170,6 @@ void MedicalVisualization::DrawLeafNodes()
 	// TODO: 在此处添加实现代码.
 	std::vector<Eigen::Vector3f> min, max;
 	CAlgorithm::ShowLeafNodes(min, max);
-	/*for (auto it = min.begin(), its = max.begin(); it != min.end(); it++, its++)
-	{
-		std::cout << "最小值:" << it->x() << "\t" << it->y() << "\t" << it->z() << std::endl;
-		std::cout << "最大值:" << its->x() << "\t" << its->y() << "\t" << its->z() << std::endl;
-	}*/
 
 	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
 	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -186,6 +241,7 @@ void MedicalVisualization::DrawLeafNodes()
 
 	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
+	renderWindow->SetSize(1000, 800);
 
 	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);

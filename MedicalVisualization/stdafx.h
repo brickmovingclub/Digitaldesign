@@ -32,10 +32,8 @@
 #include "FileOption.h"
 #include "CAlgorithm.h"
 
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkRenderingOpenGL2);
-VTK_MODULE_INIT(vtkInteractionStyle);
-VTK_MODULE_INIT(vtkRenderingFreeType);
+
+
 // 算法头文件
 // 空间划分头文件
 #include <pcl/point_types.h>
@@ -71,3 +69,9 @@ VTK_MODULE_INIT(vtkRenderingFreeType);
 #include <vtkProperty.h>
 #include <vtkPolyLine.h>
 
+#include "vtkCamera.h"
+#include "vtkConeSource.h"
+#include "vtkFloatArray.h"
+#include "vtkPointData.h"
+#include "vtkPoints.h"
+#include <vtkLookupTable.h>

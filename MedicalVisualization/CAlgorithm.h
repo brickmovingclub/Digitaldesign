@@ -16,7 +16,7 @@ public:
 	void ReadPclFile(string m_fileName);
 
 //  K阶领域显示
-	static std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n);
+	static std::set<MyPoint> KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles);
 
 // 叶子节点显示
 	static void ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max);

@@ -30,14 +30,8 @@ void CAlgorithm::ReadPclFile(string m_fileName)
 }
 
 //  K阶领域显示
-std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n)
+std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles)
 {
-	FileOption file;
-	file.Bin2ToStl();
-	
-	std::map<int, MyPoint> points = file.m_SortMapPoint;
-	std::vector<CTriangles> triangles = file.m_CTrianglesData;
-
 	int index = 0;
 	std::set<MyPoint> neighborPointAll; //所有的节点
 	neighborPointAll.insert(points[pointSerailNumber]);
@@ -82,7 +76,6 @@ std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n)
 			}
 		}
 	}
-
 	return neighborPointAll;
 }
 
@@ -92,14 +85,14 @@ void CAlgorithm::ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Ei
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>); // 创建点云（指针）
 
 	if (pcl::io::loadPCDFile<pcl::PointXYZ>("bunny.pcd", *cloud) == -1) //* 读入PCD格式的文件，如果文件不存在，返回-1
-	{
 		PCL_ERROR("Couldn't read file test_pcd.pcd \n"); //文件不存在时，返回错误，终止程序。
-	}
+
 	float resolu = 1.0f;
 	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> tree(resolu);
 	tree.setInputCloud(cloud);
 	tree.addPointsFromInputCloud();
 	std::cout << "叶子节点个数：" << tree.getLeafCount() << std::endl;
+
 	int depth = tree.getTreeDepth();
 	for (auto it = tree.begin(depth); it != tree.end(); it++)
 	{
