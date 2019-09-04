@@ -13,6 +13,8 @@ public:
 	list<CEdge>m_allListCEdgeBorder;	
 	
 	//功能函数
+	//读取ply格式文件
+	bool ReadPlyFile(const char *cfilename);
 	//读取ASCLL码STL文件
 	bool ReadAscllStlFile(const char *cfilename);
 	bool ReadAscllStl(const char *buffer);//读stl文件

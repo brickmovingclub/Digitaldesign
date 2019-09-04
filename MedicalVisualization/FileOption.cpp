@@ -15,6 +15,12 @@ FileOption::FileOption()
 FileOption::~FileOption()
 {
 }
+//读取ply格式文件
+bool FileOption::ReadPlyFile(const char *cfilename)
+{
+
+	return false;
+}
 
 //功能函数
 //读取ASCLL码STL文件

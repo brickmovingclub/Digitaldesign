@@ -31,11 +31,6 @@
 #include "CEdge.h"
 #include "FileOption.h"
 #include "CAlgorithm.h"
-
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkRenderingOpenGL2);
-VTK_MODULE_INIT(vtkInteractionStyle);
-VTK_MODULE_INIT(vtkRenderingFreeType);
 // 算法头文件
 // 空间划分头文件
 #include <pcl/point_types.h>
