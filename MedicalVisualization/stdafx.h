@@ -31,9 +31,31 @@
 #include "CEdge.h"
 #include "FileOption.h"
 #include "CAlgorithm.h"
+#include <vtkPolyData.h>
+#include <vtkSTLReader.h>
+#include <vtkPLYReader.h>
+#include <vtkSmartPointer.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkConeSource.h>
+#include <vtkCellArray.h>
+#include <vtkFloatArray.h>
+#include "vtkPointData.h"
+#include "vtkPoints.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataMapper.h"
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkLookupTable.h>
 
 
-
+#include <vtkAutoInit.h>
+VTK_MODULE_INIT(vtkRenderingOpenGL2);
+VTK_MODULE_INIT(vtkInteractionStyle);
+VTK_MODULE_INIT(vtkRenderingFreeType);
 // 算法头文件
 // 空间划分头文件
 #include <pcl/point_types.h>
