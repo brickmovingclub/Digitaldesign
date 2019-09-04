@@ -38,7 +38,7 @@ public:
     {
         if (MedicalVisualizationClass->objectName().isEmpty())
             MedicalVisualizationClass->setObjectName(QString::fromUtf8("MedicalVisualizationClass"));
-        MedicalVisualizationClass->resize(1095, 736);
+        MedicalVisualizationClass->resize(869, 598);
         actionFile_holes = new QAction(MedicalVisualizationClass);
         actionFile_holes->setObjectName(QString::fromUtf8("actionFile_holes"));
         actionReconstruction = new QAction(MedicalVisualizationClass);
@@ -47,17 +47,18 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         qvtkWidget = new QVTKWidget(centralWidget);
         qvtkWidget->setObjectName(QString::fromUtf8("qvtkWidget"));
-        qvtkWidget->setGeometry(QRect(0, -40, 1091, 711));
+        qvtkWidget->setGeometry(QRect(30, 30, 811, 491));
         MedicalVisualizationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MedicalVisualizationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1095, 26));
+        menuBar->setGeometry(QRect(0, 0, 869, 26));
         menuFix = new QMenu(menuBar);
         menuFix->setObjectName(QString::fromUtf8("menuFix"));
         MedicalVisualizationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MedicalVisualizationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
         MedicalVisualizationClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
+        MedicalVisualizationClass->insertToolBarBreak(mainToolBar);
         statusBar = new QStatusBar(MedicalVisualizationClass);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MedicalVisualizationClass->setStatusBar(statusBar);

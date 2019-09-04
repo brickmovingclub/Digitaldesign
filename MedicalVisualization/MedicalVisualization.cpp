@@ -44,6 +44,12 @@ void MedicalVisualization::Reconstruction()
 	}
 }
 
+// 显示补洞后的结果
+void MedicalVisualization::ShowHoles()
+{
+	// 读取stl文件显示
+}
+
 // 孔洞修补
 void MedicalVisualization::FillHoles()
 {
@@ -51,6 +57,10 @@ void MedicalVisualization::FillHoles()
 	FileOption fo;
 	// 算法
 	CAlgorithm ca;
+	// 获取边的信息
+	fo.ReadAscllStlFile("bunny.stl");
+	ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
 	
-
+	std::cout << "补洞" << std::endl;
+	
 }

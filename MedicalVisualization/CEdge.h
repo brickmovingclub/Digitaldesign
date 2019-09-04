@@ -6,7 +6,7 @@ using namespace std;
 class CEdge
 {
 public:
-	int flag;
+
 	CEdge();
 	CEdge(MyPoint startNode, MyPoint endNode);
 	~CEdge();
@@ -19,6 +19,7 @@ public:
 	// 边所在的三角面片的信息
 	int surfaceIndex;
 	// 存储面的信息
+	int flag = 0;
 	int index = 0;
 	void ToString()
 	{
@@ -38,7 +39,6 @@ public:
 		{
 			return false;
 		}
-
 	}
 	bool isEqual(CEdge c1)
 	{

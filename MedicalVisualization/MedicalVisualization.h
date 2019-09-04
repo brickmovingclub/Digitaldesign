@@ -23,4 +23,5 @@ private:
 private slots:
 	void FillHoles();		//	¿×¶´ÐÞ²¹
 	void Reconstruction();	//	ÖØ½¨
+	void ShowHoles();
 };
