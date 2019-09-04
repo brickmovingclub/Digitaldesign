@@ -5,10 +5,10 @@ MedicalVisualization::MedicalVisualization(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	/*viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+	viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
 	ui.qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
 	viewer->setupInteractor(ui.qvtkWidget->GetInteractor(), ui.qvtkWidget->GetRenderWindow());
-	ui.qvtkWidget->update();*/
+	ui.qvtkWidget->update();
 }
 
 // ÈıÎ¬ÖØ½¨
