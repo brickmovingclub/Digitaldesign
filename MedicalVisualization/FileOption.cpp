@@ -1,5 +1,8 @@
 #include "stdafx.h"
-#include "MedicalVisualization.h"
+//#include "MedicalVisualization.h"
+#include "Vector3.h"
+#include "CTriangles.h"
+
 #include "FileOption.h"
 using namespace std;
 unsigned int unTriangles;

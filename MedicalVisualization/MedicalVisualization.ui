@@ -13,25 +13,14 @@
   <property name="windowTitle">
    <string>MedicalVisualization</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QVTKWidget" name="qvtkWidget">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>811</width>
-      <height>491</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>869</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFix">
@@ -42,7 +31,43 @@
     <addaction name="actionReconstruction"/>
     <addaction name="actionShowHoles"/>
    </widget>
+   <widget class="QMenu" name="menuPoints">
+    <property name="title">
+     <string>Points</string>
+    </property>
+    <addaction name="actiondomainPoints"/>
+    <addaction name="actionleafNodes"/>
+    <addaction name="actionTriangulationModel"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_Project"/>
+    <addaction name="actionOpen_Project"/>
+    <addaction name="actionSave_Project"/>
+    <addaction name="actionExport"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPoints"/>
    <addaction name="menuFix"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -68,15 +93,68 @@
     <string>ShowHolesModel</string>
    </property>
   </action>
+  <action name="actiondomainPoints">
+   <property name="text">
+    <string>domainPoints</string>
+   </property>
+  </action>
+  <action name="actionleafNodes">
+   <property name="text">
+    <string>leafNodes</string>
+   </property>
+  </action>
+  <action name="actionTriangulationModel">
+   <property name="text">
+    <string>triangulationModel</string>
+   </property>
+  </action>
+  <action name="actionNew_Project">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionOpen_Project">
+   <property name="text">
+    <string>Open Project</string>
+   </property>
+  </action>
+  <action name="actionSave_Project">
+   <property name="text">
+    <string>Save Project</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QVTKWidget</class>
-   <extends>QWidget</extends>
-   <header>QVTKWidget.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="MedicalVisualization.qrc"/>
  </resources>
@@ -129,10 +207,61 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actiondomainPoints</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>DrawDomainPoints()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionleafNodes</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>DrawLeafNodes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTriangulationModel</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>Triangulation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>FillHoles()</slot>
   <slot>Reconstruction()</slot>
   <slot>ShowHoles()</slot>
+  <slot>DrawDomainPoints()</slot>
+  <slot>DrawLeafNodes()</slot>
+  <slot>Triangulation()</slot>
  </slots>
 </ui>
