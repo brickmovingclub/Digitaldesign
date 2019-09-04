@@ -25,6 +25,5 @@ private slots:
 	void Reconstruction();	//	重建	
 	void DrawDomainPoints(); // 查找N维领域点，并高亮显示
 	void DrawLeafNodes(); // 绘制叶子节点
-	void Reconstruction();	//	重建
 	void ShowHoles();
 };

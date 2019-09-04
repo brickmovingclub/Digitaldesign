@@ -175,6 +175,7 @@ vector<CTriangles> CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList, vector<
 
 	int m_count = 0;
 	m_holeList = GetHole(m_borderEdgeList);
+
 	
 	// 补洞之前对每一个洞的list进行排序
 	for (auto it = m_holeList.begin();it != m_holeList.end();it++)
@@ -225,6 +226,8 @@ vector<CTriangles> CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList, vector<
 		m_sortHoleList.insert(pair<int, vector<CEdge>>(m_count++, m_activeCEdgeList));
 	}
 	// 补洞算法
+	std::cout << "孔洞的个数 " << m_sortHoleList.size() << std::endl;
+
 	for (auto it = m_sortHoleList.begin();it != m_sortHoleList.end();it++)
 	{
 		vector<CEdge>m_activeCEdgeList=it->second;
@@ -237,7 +240,7 @@ vector<CTriangles> CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList, vector<
 			m_listResult.push_back(currentEdge);
 			// 当前面
 			CTriangles ct(m_activeCEdgeList[0].startNode, m_activeCEdgeList[0].endNode, m_activeCEdgeList[1].endNode);
-			Triangleslist.push_back(ct);
+			m_CTrianglesData.push_back(ct);
 			// 删除最小角的边
 			m_activeCEdgeList.erase(m_activeCEdgeList.begin());
 
@@ -346,12 +349,10 @@ vector<CTriangles> CAlgorithm::HoleRepair(vector<CEdge>m_borderEdgeList, vector<
 
 				}
 			} while (m_activeCEdgeList.size() > 2);
-		
+			std::cout << "后前面的大小：" << m_CTrianglesData.size() << std::endl;
 		}
-		std::cout << "后前面的大小：" << m_CTrianglesData.size() << std::endl;
-		return m_CTrianglesData;
 	}
-
+	return m_CTrianglesData;
 }
 
 // 获取孔洞边界
