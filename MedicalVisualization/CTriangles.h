@@ -2,6 +2,7 @@
 #include "MyPoint.h"
 #include "CEdge.h"
 #include <vector>
+
 // √Ê∆¨–≈œ¢
 class CTriangles
 {

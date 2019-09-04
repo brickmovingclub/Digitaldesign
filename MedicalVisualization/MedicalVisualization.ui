@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>459</height>
+    <width>869</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QVTKWidget" name="qvtkWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>641</width>
-      <height>401</height>
+      <x>30</x>
+      <y>30</y>
+      <width>811</width>
+      <height>491</height>
      </rect>
     </property>
    </widget>
@@ -30,10 +30,19 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>669</width>
+     <width>869</width>
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFix">
+    <property name="title">
+     <string>Fix</string>
+    </property>
+    <addaction name="actionFile_holes"/>
+    <addaction name="actionReconstruction"/>
+    <addaction name="actionShowHoles"/>
+   </widget>
+   <addaction name="menuFix"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -44,6 +53,21 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionFile_holes">
+   <property name="text">
+    <string>File holes</string>
+   </property>
+  </action>
+  <action name="actionReconstruction">
+   <property name="text">
+    <string>Reconstruction</string>
+   </property>
+  </action>
+  <action name="actionShowHoles">
+   <property name="text">
+    <string>ShowHolesModel</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -56,5 +80,59 @@
  <resources>
   <include location="MedicalVisualization.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionFile_holes</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>FillHoles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReconstruction</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>Reconstruction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShowHoles</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>ShowHoles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>FillHoles()</slot>
+  <slot>Reconstruction()</slot>
+  <slot>ShowHoles()</slot>
+ </slots>
 </ui>
