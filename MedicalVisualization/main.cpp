@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
 	w.show();
 	//≤‚ ‘
 	FileOption ab;
-	ab.Bin2ToStl();
+	
+	ab.ReadAscllStlFile("bunny.stl");
 	
 	return a.exec();
 

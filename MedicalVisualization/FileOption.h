@@ -13,6 +13,9 @@ public:
 	list<CEdge>m_allListCEdgeBorder;	
 	
 	//功能函数
+	//读取ASCLL码STL文件
+	bool ReadAscllStlFile(const char *cfilename);
+	bool ReadAscllStl(const char *buffer);//读stl文件
 	//读取二进制stl文件
 	int cpyint(const char*& p);
 	float cpyfloat(const char*& p);

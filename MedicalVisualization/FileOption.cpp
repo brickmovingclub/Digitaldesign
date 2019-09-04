@@ -16,6 +16,149 @@ FileOption::~FileOption()
 {
 }
 
+//功能函数
+//读取ASCLL码STL文件
+bool FileOption::ReadAscllStlFile(const char * cfilename)
+{
+	FILE *pfile;
+	long  size;
+	char *buffer;
+	size_t result;
+
+
+	//打开文件
+	fopen_s(&pfile, cfilename, "rb");
+	if (pfile == NULL)
+	{
+		fputs("file error", stderr);
+		exit(1);
+
+	}
+	//获取文件大小
+	fseek(pfile, 0, SEEK_END);
+	size = ftell(pfile);
+
+	rewind(pfile);
+	//为文件分配内存
+	buffer = (char*)malloc(sizeof(char)*size);
+	if (buffer == NULL)
+	{
+		fputs("memory error", stderr);
+		exit(2);
+	}
+	//将文件拷贝到buffer中
+	result = fread(buffer, 1, size, pfile);
+	if (result != size)
+	{
+		fputs("reading error", stderr);
+		exit(3);
+	}
+	//关闭文件，释放内存
+	fclose(pfile);
+	ios::sync_with_stdio(false);
+	ReadAscllStl(buffer);
+	ios::sync_with_stdio(true);
+	free(buffer);
+	return true;
+	
+}
+
+bool FileOption::ReadAscllStl(const char * buffer)
+{
+	float x, y, z;
+	int i, j;
+	j = 0;
+	std::pair<std::map<MyPoint, MyPoint>::iterator, bool> ret;
+	CTriangles a;
+	MyPoint b;
+	string name, useless;
+	stringstream ss(buffer);
+	ss.get();
+	getline(ss, useless);
+	do
+	{
+		ss >> useless;
+		if (useless != "facet")
+			break;
+		getline(ss, useless);
+		getline(ss, useless);
+		for (i = 0; i < 3; i++)
+		{
+			ss >> useless >> x >> y >> z;
+
+			//存面片数据
+			if (i == 0)
+			{
+
+				a.p0.x = x;
+				a.p0.y = y;
+				a.p0.z = z;
+				
+				
+			}
+			else 	if (i == 1)
+			{
+
+				a.p1.x = x;
+				a.p1.y = y;
+				a.p1.z = z;
+			
+			}
+			else 	if (i == 2)
+			{
+
+				a.p2.x = x;
+				a.p2.y = y;
+				a.p2.z = z;
+				
+			}
+			b.x = x;
+			b.y = y;
+			b.z = z;
+
+
+
+
+			//存节点数据
+			//判断map容器中是否已经存在现在要存入的数据
+			//pointlist1.insert(std::pair<mypoint, int>(b, 0));	//获取map.insert的返回值
+			b.m_TrianglesList.push_back(j);
+			//pointList.push_back(p0);
+			ret = m_MapPoint.insert(std::pair<MyPoint, MyPoint>(b, b));
+			if (ret.second == false)
+			{
+				map<MyPoint, MyPoint>::iterator it = m_MapPoint.find(b);
+				it->second.AddTriangles(j);
+
+			}
+
+			//cout << pointlist.begin()->first.x << endl;
+			
+			j++;
+
+
+		}
+		CEdge e(a.p0, a.p1);
+		CEdge e1(a.p1, a.p2);
+		CEdge e2(a.p2, a.p0);
+		m_allListCEdgeBorder.push_back(e);
+		m_allListCEdgeBorder.push_back(e1);
+		m_allListCEdgeBorder.push_back(e2);
+		m_CTrianglesData.push_back(a);
+		// 存一个面片的数据
+
+		getline(ss, useless);
+		getline(ss, useless);
+		//getline(ss, useless);
+	} while (1);
+	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
+	{
+		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
+	}
+	return true;
+}
+
+//二进制stl读取
 int FileOption::cpyint(const char*& p)
 {
 	int cpy;
