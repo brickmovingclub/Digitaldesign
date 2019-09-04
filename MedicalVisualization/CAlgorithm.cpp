@@ -3,7 +3,7 @@
 
 using namespace std;
 // 点云数据
-pcl::PointCloud<pcl::PointXYZ>::Ptr  cloud(new pcl::PointCloud<pcl::PointXYZ>);
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles(new pcl::PointCloud<pcl::PointXYZ>);
 
 
@@ -29,12 +29,88 @@ void CAlgorithm::ReadPclFile(string m_fileName)
 	}
 }
 
-void CAlgorithm::KOrderDomain()
+//  K阶领域显示
+std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n)
 {
+	FileOption file;
+	file.Bin2ToStl();
+	
+	std::map<int, MyPoint> points = file.m_SortMapPoint;
+	std::vector<CTriangles> triangles = file.m_CTrianglesData;
+
+	int index = 0;
+	std::set<MyPoint> neighborPointAll; //所有的节点
+	neighborPointAll.insert(points[pointSerailNumber]);
+	std::list<MyPoint> neighborPointN; // 第N环的节点
+	neighborPointN.push_back(points[pointSerailNumber]);
+
+	for (int ring = 0; ring < n; ring++)
+	{
+		// 第ring环的节点
+		int ringSize = neighborPointN.size();// 当前环节点的个数
+		for (int i = 0; i < ringSize && !neighborPointN.empty(); i++)
+		{
+			//找到点p的编号
+			MyPoint p = neighborPointN.front();
+			for (auto it = points.begin(); it != points.end(); it++)
+			{
+				if (it->second == p)
+				{
+					index = it->first;
+					break;
+				}
+			}
+			neighborPointN.pop_front();
+			//寻找节点index的邻居节点
+			for (auto it = points[index].m_TrianglesList.begin(); it != points[index].m_TrianglesList.end(); it++)
+			{
+				if (neighborPointAll.count(triangles[*it].p0) == 0)
+				{
+					neighborPointN.push_back(triangles[*it].p0);
+					neighborPointAll.insert(triangles[*it].p0);
+				}
+				if (neighborPointAll.count(triangles[*it].p1) == 0)
+				{
+					neighborPointN.push_back(triangles[*it].p1);
+					neighborPointAll.insert(triangles[*it].p1);
+				}
+				if (neighborPointAll.count(triangles[*it].p2) == 0)
+				{
+					neighborPointN.push_back(triangles[*it].p2);
+					neighborPointAll.insert(triangles[*it].p2);
+				}
+			}
+		}
+	}
+
+	return neighborPointAll;
 }
 
-void CAlgorithm::ShowLeafNodes()
+// 叶子节点显示
+void CAlgorithm::ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max)
 {
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>); // 创建点云（指针）
+
+	if (pcl::io::loadPCDFile<pcl::PointXYZ>("bunny.pcd", *cloud) == -1) //* 读入PCD格式的文件，如果文件不存在，返回-1
+	{
+		PCL_ERROR("Couldn't read file test_pcd.pcd \n"); //文件不存在时，返回错误，终止程序。
+	}
+	float resolu = 1.0f;
+	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> tree(resolu);
+	tree.setInputCloud(cloud);
+	tree.addPointsFromInputCloud();
+	std::cout << "叶子节点个数：" << tree.getLeafCount() << std::endl;
+	int depth = tree.getTreeDepth();
+	for (auto it = tree.begin(depth); it != tree.end(); it++)
+	{
+		if (it.isLeafNode())
+		{
+			Eigen::Vector3f min_pt, max_pt;
+			tree.getVoxelBounds(it, min_pt, max_pt);
+			min.push_back(min_pt);
+			max.push_back(max_pt);
+		}
+	}
 }
 
 // 三维重建

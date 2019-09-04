@@ -53,3 +53,18 @@
 #include "Vector3.h"
 #include <vtkRenderWindow.h>
 
+//显示叶子节点
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkSmartPointer.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPoints.h>
+#include <vtkLine.h>
+#include <vtkActor.h>
+#include <vtkSmartPointer.h>
+#include <vtkCellArray.h>
+#include <vtkCellData.h>
+#include <vtkProperty.h>
+#include <vtkPolyLine.h>
+

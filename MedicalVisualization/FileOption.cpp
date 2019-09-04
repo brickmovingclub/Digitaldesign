@@ -157,7 +157,9 @@ bool FileOption::ReadBinary(const char * buffer)
 	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
 	{
 		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
+		i++;
 	}
+
 	return false;
 }
 

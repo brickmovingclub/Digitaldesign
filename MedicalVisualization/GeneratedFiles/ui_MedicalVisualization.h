@@ -27,10 +27,13 @@ class Ui_MedicalVisualizationClass
 public:
     QAction *actionFile_holes;
     QAction *actionReconstruction;
+    QAction *actionDomainPoints;
+    QAction *actionLeafNode;
     QWidget *centralWidget;
     QVTKWidget *qvtkWidget;
     QMenuBar *menuBar;
     QMenu *menuFix;
+    QMenu *menuDomainPoints;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -43,6 +46,10 @@ public:
         actionFile_holes->setObjectName(QString::fromUtf8("actionFile_holes"));
         actionReconstruction = new QAction(MedicalVisualizationClass);
         actionReconstruction->setObjectName(QString::fromUtf8("actionReconstruction"));
+        actionDomainPoints = new QAction(MedicalVisualizationClass);
+        actionDomainPoints->setObjectName(QString::fromUtf8("actionDomainPoints"));
+        actionLeafNode = new QAction(MedicalVisualizationClass);
+        actionLeafNode->setObjectName(QString::fromUtf8("actionLeafNode"));
         centralWidget = new QWidget(MedicalVisualizationClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         qvtkWidget = new QVTKWidget(centralWidget);
@@ -54,6 +61,8 @@ public:
         menuBar->setGeometry(QRect(0, 0, 1095, 26));
         menuFix = new QMenu(menuBar);
         menuFix->setObjectName(QString::fromUtf8("menuFix"));
+        menuDomainPoints = new QMenu(menuBar);
+        menuDomainPoints->setObjectName(QString::fromUtf8("menuDomainPoints"));
         MedicalVisualizationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MedicalVisualizationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -63,12 +72,17 @@ public:
         MedicalVisualizationClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFix->menuAction());
+        menuBar->addAction(menuDomainPoints->menuAction());
         menuFix->addAction(actionFile_holes);
         menuFix->addAction(actionReconstruction);
+        menuDomainPoints->addAction(actionDomainPoints);
+        menuDomainPoints->addAction(actionLeafNode);
 
         retranslateUi(MedicalVisualizationClass);
         QObject::connect(actionFile_holes, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(FillHoles()));
         QObject::connect(actionReconstruction, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(Reconstruction()));
+        QObject::connect(actionDomainPoints, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(DrawDomainPoints()));
+        QObject::connect(actionLeafNode, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(DrawLeafNodes()));
 
         QMetaObject::connectSlotsByName(MedicalVisualizationClass);
     } // setupUi
@@ -78,7 +92,10 @@ public:
         MedicalVisualizationClass->setWindowTitle(QApplication::translate("MedicalVisualizationClass", "MedicalVisualization", nullptr));
         actionFile_holes->setText(QApplication::translate("MedicalVisualizationClass", "File holes", nullptr));
         actionReconstruction->setText(QApplication::translate("MedicalVisualizationClass", "Reconstruction", nullptr));
+        actionDomainPoints->setText(QApplication::translate("MedicalVisualizationClass", "DomainPoints", nullptr));
+        actionLeafNode->setText(QApplication::translate("MedicalVisualizationClass", "LeafNode", nullptr));
         menuFix->setTitle(QApplication::translate("MedicalVisualizationClass", "Fix", nullptr));
+        menuDomainPoints->setTitle(QApplication::translate("MedicalVisualizationClass", "Points", nullptr));
     } // retranslateUi
 
 };
