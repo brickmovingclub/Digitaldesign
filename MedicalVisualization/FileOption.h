@@ -10,7 +10,7 @@ public:
 	vector<CTriangles> m_CTrianglesData;
 	map<MyPoint, MyPoint> m_MapPoint;
 	map<int, MyPoint>  m_SortMapPoint;
-	list<CEdge>m_allListCEdgeBorder;	
+	vector<CEdge>m_allListCEdgeBorder;
 	
 	//功能函数
 	//读取ply格式文件

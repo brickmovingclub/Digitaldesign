@@ -44,6 +44,41 @@ void MedicalVisualization::Reconstruction()
 	}
 }
 
+// 显示补洞后的结果
+void MedicalVisualization::ShowHoles()
+{
+	// 读取stl文件显示
+	std::cout << "ShowHoles: " << std::endl;
+	std::string inputFilename = "play.ply";
+
+	vtkSmartPointer<vtkPLYReader> reader =
+		vtkSmartPointer<vtkPLYReader>::New();
+	reader->SetFileName(inputFilename.c_str());
+	reader->Update();
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+		vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(reader->GetOutputPort());
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	renderer->AddActor(actor);
+	renderer->SetBackground(.3, .6, .3);
+	vtkSmartPointer<vtkRenderWindow> renderwindow =
+		vtkSmartPointer<vtkRenderWindow>::New();
+	renderwindow->AddRenderer(renderer);
+	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+		vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	renderWindowInteractor->SetRenderWindow(renderwindow);
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+		vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	renderWindowInteractor->SetInteractorStyle(style);
+	renderWindowInteractor->Initialize();
+	//renderwindow->Render();
+	ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	ui.qvtkWidget->show();
+}
+
 // 孔洞修补
 void MedicalVisualization::FillHoles()
 {
@@ -51,6 +86,11 @@ void MedicalVisualization::FillHoles()
 	FileOption fo;
 	// 算法
 	CAlgorithm ca;
+	fo.ReadAscllStlFile("bunny.stl");
+
+	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
+	fo.SavePly();
+	std::cout << "补洞完成" << std::endl;
 
 }
 

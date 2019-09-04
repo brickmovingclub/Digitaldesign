@@ -159,7 +159,7 @@ bool FileOption::ReadAscllStl(const char * buffer)
 		getline(ss, useless);
 		getline(ss, useless);
 	} while (1);
-	i = 0;
+	std::cout <<"边的数量：" <<m_allListCEdgeBorder.size() << std::endl;
 	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
 	{
 		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
@@ -234,7 +234,7 @@ void FileOption::Bin2ToStl()
 
 	free(buffer);
 	//return true;
-	std::cout << "点的个数: " << pointList.size() << std::endl;
+	//std::cout << "点的个数: " << pointList.size() << std::endl;
 }
 
 //读取二进制stl文件
