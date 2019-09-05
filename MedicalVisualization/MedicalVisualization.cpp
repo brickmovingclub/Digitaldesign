@@ -577,6 +577,23 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
 		fileoption.ReadPlyFile(name1);
+		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
+		reader->SetFileName(name1);
+		reader->Update();
+
+		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputConnection(reader->GetOutputPort());
+		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+
+		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->AddActor(actor);
+		renderer->SetBackground(.3, .6, .3);
+		vtkSmartPointer<vtkRenderWindow> renderwindow =
+			vtkSmartPointer<vtkRenderWindow>::New();
+		renderwindow->AddRenderer(renderer);
+		m_vtkWidget->SetRenderWindow(renderwindow);
+		m_vtkWidget->show();
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
@@ -612,6 +629,9 @@ void MedicalVisualization::SaveFile()
 		fileoption.SaveAsStl(name1);
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
+	{
+		fileoption.SavePly(name1);
+	}
 
 }
 
@@ -636,12 +656,13 @@ void MedicalVisualization::ShowPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 	vtkActor *actor = vtkActor::New();
 	actor->SetMapper(mapper);
 	//设置颜色与点大小
-	actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
-	actor->GetProperty()->SetPointSize(1);
+	actor->GetProperty()->SetColor(176.0/255, 196.0/255, 222.0/255);
+	actor->GetProperty()->SetPointSize(3);
 
 	//显示
 	vtkRenderer *renderer = vtkRenderer::New();
 	renderer->AddActor(actor);
+	renderer->SetBackground(.3, .6, .3);
 
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
