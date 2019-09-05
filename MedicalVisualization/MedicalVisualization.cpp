@@ -6,7 +6,8 @@
 
 #include "CStackWidget.h"
 #include "MedicalVisualization.h"
-
+//文件操作
+FileOption fileoption;
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
 //{
@@ -528,7 +529,36 @@ void MedicalVisualization::DrawLeafNodes()
 
 void MedicalVisualization::ReadFile()
 {
+	
+	QString file_full, file_name, file_path, file_suffix;
+	QFileInfo fileinfo;
+	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
+	fileinfo = QFileInfo(file_full);
+	//文件名
+	file_name = fileinfo.fileName();
+	//文件后缀
+	file_suffix = fileinfo.suffix();
+	//绝对路径
+	file_path = fileinfo.absolutePath();
+	std::cout << "文件名：" << file_name.toStdString().data() << std::endl;
+	std::cout << "后缀：" << file_suffix.toStdString().data() << std::endl;
+	std::cout << "绝对路径：" << file_path.toStdString().data() << std::endl;
+	QByteArray temp = file_path.toStdString().data();
+	temp = file_full.toLocal8Bit();
+	char *name1 = temp.data();
 
+	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
+	{
+		fileoption.ReadAscllStlFile(name1);
+	}
+	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
+	{
+		fileoption.ReadPlyFile(name1);
+	}
+	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
+	{
+		fileoption.ReadAscFile(name1);
+	}
 }
 
 void MedicalVisualization::SaveFile()

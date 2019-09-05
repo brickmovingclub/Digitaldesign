@@ -23,9 +23,9 @@ public:
 	bool ReadAscllStlFile(const char *cfilename);
 	bool ReadAscllStl(const char *buffer);//读stl文件
 	//读取二进制stl文件
+	void Bin2ToStl();
 	int cpyint(const char*& p);
 	float cpyfloat(const char*& p);
-	void Bin2ToStl();
 	bool ReadBinary(const char * buffer);
 
 	//读取.asc文件

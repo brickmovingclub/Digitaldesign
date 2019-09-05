@@ -175,7 +175,15 @@ bool FileOption::ReadAscllStlFile(const char * cfilename)
 	//关闭文件，释放内存
 	fclose(pfile);
 	ios::sync_with_stdio(false);
-	ReadAscllStl(buffer);
+	if (buffer[79] != '\0')//判断格式
+	{
+		ReadAscllStl(buffer);
+	
+	}
+	else
+	{
+		ReadBinary(buffer);
+	}
 	ios::sync_with_stdio(true);
 	free(buffer);
 	return true;
@@ -273,6 +281,10 @@ bool FileOption::ReadAscllStl(const char * buffer)
 	return true;
 }
 
+void FileOption::Bin2ToStl()
+{
+}
+
 //二进制stl读取
 int FileOption::cpyint(const char*& p)
 {
@@ -291,56 +303,7 @@ float FileOption::cpyfloat(const char*& p)
 	return cpy;
 }
 
-void FileOption::Bin2ToStl()
-{
-	FILE * pFile;
-	long lSize;
-	char* buffer;
-	size_t result;
-	const char *cfilename = "bunny.stl";
-	/* 若要一个byte不漏地读入整个文件，只能采用二进制方式打开  */
-	fopen_s(&pFile, cfilename, "rb");
-	if (pFile == NULL)
-	{
-		fputs("File error", stderr);
-		exit(1);
-	}
 
-	/* 获取文件大小 */
-	fseek(pFile, 0, SEEK_END);
-	lSize = ftell(pFile);
-	rewind(pFile);
-
-	/* 分配内存存储整个文件 */
-	buffer = (char*)malloc(sizeof(char)*lSize);
-	if (buffer == NULL)
-	{
-		fputs("Memory error", stderr);
-		exit(2);
-	}
-
-	/* 将文件拷贝到buffer中 */
-	result = fread(buffer, 1, lSize, pFile);
-	if (result != lSize)
-	{
-		fputs("Reading error", stderr);
-		exit(3);
-	}
-
-
-	/* 结束演示，关闭文件并释放内存 */
-	fclose(pFile);
-
-	ios::sync_with_stdio(false);
-
-	ReadBinary(buffer);
-	//Repaithole(sortEdge);
-	ios::sync_with_stdio(true);
-
-	free(buffer);
-	//return true;
-	//std::cout << "点的个数: " << pointList.size() << std::endl;
-}
 
 bool FileOption::ReadBinary(const char * buffer)
 {
