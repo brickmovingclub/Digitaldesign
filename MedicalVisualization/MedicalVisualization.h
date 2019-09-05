@@ -21,6 +21,8 @@ private:
 	//vtkSmartPointer<vtkRenderWindow> renderwindow =
 	//	vtkSmartPointer<vtkRenderWindow>::New();
 	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
+public:
+	pcl::PointCloud<pcl::PointXYZ>::Ptr m_cloud;
 
 //<<<<<<< HEAD
 	//CVtkWidget *m_vtkWidget;
@@ -59,6 +61,6 @@ private slots:
 	void ShowHoles();
 
 public:
-	void ShowPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+	void ShowPointCloud();
 //>>>>>>> d8e72855f7a27854b8af6cb920225bc70af1a531
 };

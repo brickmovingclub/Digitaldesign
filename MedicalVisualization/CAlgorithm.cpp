@@ -81,11 +81,11 @@ std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::ma
 }
 
 // 叶子节点显示
-void CAlgorithm::ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max)
+void CAlgorithm::ShowLeafNodes(pcl::PointCloud<pcl::PointXYZ>::Ptr m_cloud, std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max)
 {
 	float resolu = 1.0f;
 	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> tree(resolu);
-	tree.setInputCloud(cloud);
+	tree.setInputCloud(m_cloud);
 	tree.addPointsFromInputCloud();
 	std::cout << "叶子节点个数：" << tree.getLeafCount() << std::endl;
 

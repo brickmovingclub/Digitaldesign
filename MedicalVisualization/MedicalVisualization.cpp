@@ -297,7 +297,7 @@ void MedicalVisualization::FillHoles()
 	//fileoption.ReadAscllStlFile("bunny.stl");
 
 	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
-	fileoption.SavePly();
+	//fileoption.SavePly();
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
@@ -446,7 +446,7 @@ void MedicalVisualization::DrawLeafNodes()
 {
 	// TODO: 在此处添加实现代码.
 	std::vector<Eigen::Vector3f> min, max;
-	CAlgorithm::ShowLeafNodes(min, max);
+	CAlgorithm::ShowLeafNodes(m_cloud, min, max);
 
 	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
 	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -573,8 +573,8 @@ void MedicalVisualization::ReadFile()
 		// asc文件转换成pcd
 		string pclFile=fileoption.AscToPcd();
 		// 读取pcd文件生成点云
-		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = calgorithm.ReadPclFile(pclFile);
-		ShowPointCloud(cloud);
+		m_cloud = calgorithm.ReadPclFile(pclFile);
+		ShowPointCloud();
 	}
 }
 
@@ -583,12 +583,12 @@ void MedicalVisualization::SaveFile()
 
 }
 
-void MedicalVisualization::ShowPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+void MedicalVisualization::ShowPointCloud()
 {
 	vtkPoints *points = vtkPoints::New();
 	vtkCellArray *cells = vtkCellArray::New();
 	vtkIdType idtype;
-	for (auto it = cloud->points.begin(); it != cloud->points.end(); it++)
+	for (auto it = m_cloud->points.begin(); it != m_cloud->points.end(); it++)
 	{
 		idtype = points->InsertNextPoint(it->x, it->y, it->z);
 		cells->InsertNextCell(1, &idtype);
