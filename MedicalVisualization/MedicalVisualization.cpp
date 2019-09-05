@@ -285,7 +285,7 @@ void MedicalVisualization::Reconstruction()
 }
 
 // 显示补洞后的结果
-void MedicalVisualization::ShowHoles(const char * cfilename)
+void MedicalVisualization::ShowHoles()
 {
 	
 }
@@ -301,10 +301,11 @@ void MedicalVisualization::FillHoles()
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
-
+	std::cout << "ShowHoles: " << std::endl;
+	std::string inputFilename = "play.ply";
 
 	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-	reader->SetFileName(cfilename);
+	reader->SetFileName(inputFilename.c_str());
 	reader->Update();
 
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -539,11 +540,7 @@ void MedicalVisualization::DrawLeafNodes()
 
 void MedicalVisualization::ReadFile()
 {
-	fileoption.m_allListCEdgeBorder.clear();
-	fileoption.m_CTrianglesData.clear();
-	fileoption.m_MapPoint.clear();
-	fileoption.m_SortMapPoint.clear();
-	fileoption.normal.clear();
+	
 	QString file_full, file_name, file_path, file_suffix;
 	QFileInfo fileinfo;
 	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
@@ -557,56 +554,22 @@ void MedicalVisualization::ReadFile()
 	std::cout << "文件名：" << file_name.toStdString().data() << std::endl;
 	std::cout << "后缀：" << file_suffix.toStdString().data() << std::endl;
 	std::cout << "绝对路径：" << file_path.toStdString().data() << std::endl;
-	QByteArray temp ;
+	QByteArray temp = file_path.toStdString().data();
 	temp = file_full.toLocal8Bit();
 	char *name1 = temp.data();
 
 	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
 	{
 		fileoption.ReadAscllStlFile(name1);
-		vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
-		reader->SetFileName(name1);
-		reader->Update();
-
-		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-		mapper->SetInputConnection(reader->GetOutputPort());
-		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-		actor->SetMapper(mapper);
-
-		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-		renderer->AddActor(actor);
-		renderer->SetBackground(.3, .6, .3);
-		vtkSmartPointer<vtkRenderWindow> renderwindow =
-		vtkSmartPointer<vtkRenderWindow>::New();
-		renderwindow->AddRenderer(renderer);
-		m_vtkWidget->SetRenderWindow(renderwindow);
-		m_vtkWidget->show();
-		
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
 		fileoption.ReadPlyFile(name1);
-		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-		reader->SetFileName(name1);
-		reader->Update();
-
-		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-		mapper->SetInputConnection(reader->GetOutputPort());
-		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-		actor->SetMapper(mapper);
-
-		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-		renderer->AddActor(actor);
-		renderer->SetBackground(.3, .6, .3);
-		vtkSmartPointer<vtkRenderWindow> renderwindow =
-			vtkSmartPointer<vtkRenderWindow>::New();
-		renderwindow->AddRenderer(renderer);
-		m_vtkWidget->SetRenderWindow(renderwindow);
-		m_vtkWidget->show();
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
 		// 读取asc文件
+
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
 		// asc文件转换成pcd
@@ -618,25 +581,5 @@ void MedicalVisualization::ReadFile()
 
 void MedicalVisualization::SaveFile()
 {
-	QString file_full, file_suffix;
-	QFileInfo fileinfo;
-	file_full = QFileDialog::getSaveFileName(this, tr("Save File"), "/", tr("STL(*.stl);;PLY(*.ply)"));
-	if (file_full == "") 
-	{
-		return ;
-	}
-	fileinfo = QFileInfo(file_full);
-	//文件后缀
-	file_suffix = fileinfo.suffix();
-	QByteArray temp;
-	temp = file_full.toLocal8Bit();
-	char *name1 = temp.data();
-	if (strcmp(file_suffix.toStdString().data(), "stl") == 0)
-	{
-		fileoption.SaveAsStl(name1);
-	}
-	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
-	{
-		fileoption.SavePly(name1);
-	}
+
 }
