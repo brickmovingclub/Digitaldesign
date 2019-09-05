@@ -302,7 +302,6 @@ void MedicalVisualization::FillHoles()
 
 	// 读取stl文件显示
 
-
 	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
 	reader->SetFileName("bunny.ply");
 	reader->Update();
@@ -337,10 +336,8 @@ void MedicalVisualization::DrawDomainPoints()
 {
 	// TODO: 在此处添加实现代码.
 	//绘制模型
-	FileOption file;
-	file.Bin2ToStl();
-	std::map<int, MyPoint> points = file.m_SortMapPoint;
-	std::vector<CTriangles> triangles = file.m_CTrianglesData;
+	std::map<int, MyPoint> points = fileoption.m_SortMapPoint;
+	std::vector<CTriangles> triangles = fileoption.m_CTrianglesData;
 
 	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
 	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -556,7 +553,7 @@ void MedicalVisualization::ReadFile()
 	std::cout << "文件名：" << file_name.toStdString().data() << std::endl;
 	std::cout << "后缀：" << file_suffix.toStdString().data() << std::endl;
 	std::cout << "绝对路径：" << file_path.toStdString().data() << std::endl;
-	QByteArray temp ;
+	QByteArray temp = file_path.toStdString().data();
 	temp = file_full.toLocal8Bit();
 	char *name1 = temp.data();
 
@@ -584,23 +581,6 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
 		fileoption.ReadPlyFile(name1);
-		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-		reader->SetFileName(name1);
-		reader->Update();
-
-		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-		mapper->SetInputConnection(reader->GetOutputPort());
-		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-		actor->SetMapper(mapper);
-
-		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-		renderer->AddActor(actor);
-		renderer->SetBackground(.3, .6, .3);
-		vtkSmartPointer<vtkRenderWindow> renderwindow =
-			vtkSmartPointer<vtkRenderWindow>::New();
-		renderwindow->AddRenderer(renderer);
-		m_vtkWidget->SetRenderWindow(renderwindow);
-		m_vtkWidget->show();
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
@@ -611,7 +591,8 @@ void MedicalVisualization::ReadFile()
 		// asc文件转换成pcd
 		string pclFile=fileoption.AscToPcd();
 		// 读取pcd文件生成点云
-		calgorithm.ReadPclFile(pclFile);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = calgorithm.ReadPclFile(pclFile);
+		ShowPointCloud(cloud);
 	}
 }
 
@@ -635,8 +616,40 @@ void MedicalVisualization::SaveFile()
 		fileoption.SaveAsStl(name1);
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
+
+}
+
+void MedicalVisualization::ShowPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
+	vtkPoints *points = vtkPoints::New();
+	vtkCellArray *cells = vtkCellArray::New();
+	vtkIdType idtype;
+	for (auto it = cloud->points.begin(); it != cloud->points.end(); it++)
 	{
-		fileoption.SavePly(name1);
+		idtype = points->InsertNextPoint(it->x, it->y, it->z);
+		cells->InsertNextCell(1, &idtype);
 	}
 
+	vtkPolyData *polyData = vtkPolyData::New();
+	polyData->SetPoints(points);
+	polyData->SetVerts(cells);
+
+	vtkPolyDataMapper *mapper = vtkPolyDataMapper::New();
+	mapper->SetInputData(polyData);
+
+	vtkActor *actor = vtkActor::New();
+	actor->SetMapper(mapper);
+	//设置颜色与点大小
+	actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
+	actor->GetProperty()->SetPointSize(1);
+
+	//显示
+	vtkRenderer *renderer = vtkRenderer::New();
+	renderer->AddActor(actor);
+
+	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
+	renderWindow->AddRenderer(renderer);
+
+	m_vtkWidget->SetRenderWindow(renderWindow);
+	m_vtkWidget->update();
 }
