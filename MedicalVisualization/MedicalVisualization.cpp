@@ -567,6 +567,7 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
 		// 读取asc文件
+
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
 		// asc文件转换成pcd
