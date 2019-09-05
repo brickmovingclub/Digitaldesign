@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 typedef Eigen::Vector3d Point1;
+
 using namespace std;
 class CAlgorithm
 {
@@ -13,7 +14,7 @@ public:
 	MyPoint frontPoint;
 	MyPoint rearPoint;
 // pcd数据读取
-	void ReadPclFile(string m_fileName);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr ReadPclFile(string m_fileName);
 
 //  K阶领域显示
 	static std::set<MyPoint> KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles);

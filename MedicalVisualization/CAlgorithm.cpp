@@ -1,12 +1,9 @@
 #include "stdafx.h"
-#include "CTriangles.h"
-
 #include "CAlgorithm.h"
 
 using namespace std;
 // 点云数据
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles(new pcl::PointCloud<pcl::PointXYZ>);
 
 
 CAlgorithm::CAlgorithm()
@@ -20,15 +17,16 @@ CAlgorithm::~CAlgorithm()
 }
 
 // 读取PCD文件格式数据
-void CAlgorithm::ReadPclFile(string m_fileName)
+pcl::PointCloud<pcl::PointXYZ>::Ptr CAlgorithm::ReadPclFile(string m_fileName)
 {
 	pcl::io::loadPCDFile<pcl::PointXYZ>(m_fileName, *cloud);
 
 	if (pcl::io::loadPCDFile<pcl::PointXYZ>(m_fileName, *cloud) == -1)
 	{
 		std::cout << "Cloud reading failed。" << std::endl;
-		return;
+		return cloud;
 	}
+	return cloud;
 }
 
 //  K阶领域显示
@@ -84,7 +82,7 @@ std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::ma
 // 叶子节点显示
 void CAlgorithm::ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max)
 {
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>); // 创建点云（指针）
+	//pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>); // 创建点云（指针）
 
 	if (pcl::io::loadPCDFile<pcl::PointXYZ>("bunny.pcd", *cloud) == -1) //* 读入PCD格式的文件，如果文件不存在，返回-1
 		PCL_ERROR("Couldn't read file test_pcd.pcd \n"); //文件不存在时，返回错误，终止程序。

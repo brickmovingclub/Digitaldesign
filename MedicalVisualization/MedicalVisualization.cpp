@@ -6,6 +6,7 @@
 
 #include "CStackWidget.h"
 #include "MedicalVisualization.h"
+
 //文件操作
 FileOption fileoption;
 // 算法操作
@@ -284,11 +285,6 @@ void MedicalVisualization::Reconstruction()
 	m_vtkWidget->show();
 }
 
-// 显示补洞后的结果
-void MedicalVisualization::ShowHoles()
-{
-	
-}
 
 // 孔洞修补
 void MedicalVisualization::FillHoles()
@@ -297,7 +293,7 @@ void MedicalVisualization::FillHoles()
 	//fileoption.ReadAscllStlFile("bunny.stl");
 
 	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
-	fileoption.SavePly();
+	fileoption.SavePly("bunny.ply");
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
@@ -575,7 +571,7 @@ void MedicalVisualization::ReadFile()
 		// asc文件转换成pcd
 		string pclFile=fileoption.AscToPcd();
 		// 读取pcd文件生成点云
-		calgorithm.ReadPclFile(pclFile);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=calgorithm.ReadPclFile(pclFile);
 	}
 }
 
