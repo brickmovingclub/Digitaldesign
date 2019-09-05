@@ -510,7 +510,7 @@ void FileOption::SaveAsPLY(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles, p
 	}
 }
 //另存为ply格式文件
-void FileOption::SavePly()
+void FileOption::SavePly(const char * cfilename)
 {
 	map<MyPoint, int>pointlist;
 	map<MyPoint, int>pointlist1;
@@ -560,8 +560,8 @@ void FileOption::SavePly()
 		itr->mp2 = v->second;
 	}
 	//
-	string fileName = "play.ply";
-	ofstream of(fileName.c_str());
+	//string fileName = cfilename;
+	ofstream of(cfilename);
 	of.precision(std::numeric_limits<double>::digits10);
 	//ofstream OpenFile("D:\\vs2017projects\\Task2\\testmap.ply");
 	if (of.fail())
@@ -588,7 +588,7 @@ void FileOption::SavePly()
 	}
 }
 //另存为stl格式文件
-void FileOption::SaveAsStl()
+void FileOption::SaveAsStl(const char * cfilename)
 {
 	int i = 0;
 	for (vector<CTriangles>::iterator  it = m_CTrianglesData.begin(); it != m_CTrianglesData.end(); it++)
@@ -603,7 +603,7 @@ void FileOption::SaveAsStl()
 		normal.insert(std::pair<int, Vector3>(i, q));
 		i++;
 	}
-	std::ofstream fileout("bunny.stl");
+	std::ofstream fileout(cfilename);
 	if (fileout.is_open())
 	{
 		int i = 0;
@@ -623,4 +623,6 @@ void FileOption::SaveAsStl()
 		fileout.close();
 	}
 }
+
+
 

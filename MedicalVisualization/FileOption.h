@@ -36,9 +36,11 @@ public:
 	//把划分好的三角面片另存为.ply文件
 	void SaveAsPLY(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTriangles, pcl::PolygonMesh triangles); 
 	//另存为ply格式文件
-	void SavePly();
+	void SavePly(const char * cfilename);
 	//另存为stl格式文件
-	void SaveAsStl();
+	void SaveAsStl(const char * cfilename);
+
+	
 
 };
 
