@@ -35,16 +35,16 @@ void MedicalVisualization::InitVtk()
 	renderer->SetBackground(.3, .6, .3);
 	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderwindow->AddRenderer(renderer);
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderwindow);
-	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-	renderWindowInteractor->SetInteractorStyle(style);
-	renderWindowInteractor->Initialize();
+	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	//renderWindowInteractor->SetRenderWindow(renderwindow);
+	//vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	//renderWindowInteractor->SetInteractorStyle(style);
+	//renderWindowInteractor->Initialize();
 	//renderwindow->Render();
 	m_vtkWidget = new QVTKWidget(this);
 	m_vtkWidget->setWindowTitle("vtkWidget");
 	m_pMdiAreaCenter->addSubWindow(m_vtkWidget);
-	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	m_vtkWidget->SetRenderWindow(renderwindow);
 	//m_vtkWidget->show();
 }
 
@@ -420,14 +420,14 @@ void MedicalVisualization::DrawDomainPoints()
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
-	iren->SetRenderWindow(renderWindow);
+	//vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
+	//iren->SetRenderWindow(renderWindow);
 
-	vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
-	iren->SetInteractorStyle(style);
+	//vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
+	//iren->SetInteractorStyle(style);
 
-	iren->Initialize();
-	m_vtkWidget->SetRenderWindow(iren->GetRenderWindow());
+	//iren->Initialize();
+	m_vtkWidget->SetRenderWindow(renderWindow);
 	m_vtkWidget->update();
 }
 
@@ -508,21 +508,21 @@ void MedicalVisualization::DrawLeafNodes()
 
 	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
-	renderWindow->SetSize(1000, 800);
+	//renderWindow->SetSize(1000, 800);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderWindow);
+	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	//renderWindowInteractor->SetRenderWindow(renderWindow);
 
-	vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
-	renderWindowInteractor->SetInteractorStyle(style);
+	//vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
+	//renderWindowInteractor->SetInteractorStyle(style);
 
 	renderer->AddActor(lineActor);
 	renderWindow->Render();
 
-	renderWindowInteractor->Initialize();
+	//renderWindowInteractor->Initialize();
 	//renderWindowInteractor->Start();
 
-	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	m_vtkWidget->SetRenderWindow(renderWindow);
 	m_vtkWidget->update();
 }
 
