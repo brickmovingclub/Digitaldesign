@@ -1,6 +1,6 @@
 #include <QtWidgets>
 #include <QtWidgets/QApplication>
-
+#include <QVTKWidget.h>
 
 
 #include <pcl/point_cloud.h>

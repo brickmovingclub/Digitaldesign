@@ -154,9 +154,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="CStackWidget.ui" />
     <QtUic Include="MedicalVisualization.ui" />
-    <QtUic Include="vtkWidget.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MedicalVisualization.qrc" />

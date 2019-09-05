@@ -4,10 +4,10 @@
 
 #include "CTableView.h"
 
-
-
-
-
+#include "CStackWidget.h"
+#include "MedicalVisualization.h"
+//文件操作
+FileOption fileoption;
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
 //{
@@ -36,15 +36,16 @@ void MedicalVisualization::InitVtk()
 	renderer->SetBackground(.3, .6, .3);
 	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderwindow->AddRenderer(renderer);
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderwindow);
-	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-	renderWindowInteractor->SetInteractorStyle(style);
-	renderWindowInteractor->Initialize();
+	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	//renderWindowInteractor->SetRenderWindow(renderwindow);
+	//vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	//renderWindowInteractor->SetInteractorStyle(style);
+	//renderWindowInteractor->Initialize();
 	//renderwindow->Render();
+	m_vtkWidget = new QVTKWidget(this);
 	m_vtkWidget->setWindowTitle("vtkWidget");
 	m_pMdiAreaCenter->addSubWindow(m_vtkWidget);
-	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	m_vtkWidget->SetRenderWindow(renderwindow);
 	//m_vtkWidget->show();
 }
 
@@ -432,15 +433,15 @@ void MedicalVisualization::DrawDomainPoints()
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
 
-	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
-	iren->SetRenderWindow(renderWindow);
+	//vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::New();
+	//iren->SetRenderWindow(renderWindow);
 
-	vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
-	iren->SetInteractorStyle(style);
+	//vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
+	//iren->SetInteractorStyle(style);
 
-	iren->Initialize();
-	ui.qvtkWidget->SetRenderWindow(iren->GetRenderWindow());
-	ui.qvtkWidget->show();
+	//iren->Initialize();
+	m_vtkWidget->SetRenderWindow(renderWindow);
+	m_vtkWidget->update();
 }
 
 // 绘制叶子节点
@@ -520,20 +521,59 @@ void MedicalVisualization::DrawLeafNodes()
 
 	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
-	renderWindow->SetSize(1000, 800);
+	//renderWindow->SetSize(1000, 800);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderWindow);
+	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	//renderWindowInteractor->SetRenderWindow(renderWindow);
 
-	vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
-	renderWindowInteractor->SetInteractorStyle(style);
+	//vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
+	//renderWindowInteractor->SetInteractorStyle(style);
 
 	renderer->AddActor(lineActor);
 	renderWindow->Render();
 
-	renderWindowInteractor->Initialize();
+	//renderWindowInteractor->Initialize();
 	//renderWindowInteractor->Start();
 
-	ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
-	ui.qvtkWidget->show();
+	m_vtkWidget->SetRenderWindow(renderWindow);
+	m_vtkWidget->update();
+}
+
+void MedicalVisualization::ReadFile()
+{
+	
+	QString file_full, file_name, file_path, file_suffix;
+	QFileInfo fileinfo;
+	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
+	fileinfo = QFileInfo(file_full);
+	//文件名
+	file_name = fileinfo.fileName();
+	//文件后缀
+	file_suffix = fileinfo.suffix();
+	//绝对路径
+	file_path = fileinfo.absolutePath();
+	std::cout << "文件名：" << file_name.toStdString().data() << std::endl;
+	std::cout << "后缀：" << file_suffix.toStdString().data() << std::endl;
+	std::cout << "绝对路径：" << file_path.toStdString().data() << std::endl;
+	QByteArray temp = file_path.toStdString().data();
+	temp = file_full.toLocal8Bit();
+	char *name1 = temp.data();
+
+	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
+	{
+		fileoption.ReadAscllStlFile(name1);
+	}
+	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
+	{
+		fileoption.ReadPlyFile(name1);
+	}
+	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
+	{
+		fileoption.ReadAscFile(name1);
+	}
+}
+
+void MedicalVisualization::SaveFile()
+{
+
 }
