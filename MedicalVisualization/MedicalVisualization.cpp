@@ -297,14 +297,14 @@ void MedicalVisualization::FillHoles()
 	//fileoption.ReadAscllStlFile("bunny.stl");
 
 	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
-	fileoption.SavePly();
+	fileoption.SavePly("bunny.ply");
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
 
 
 	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-	reader->SetFileName(cfilename);
+	reader->SetFileName("bunny.ply");
 	reader->Update();
 
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
