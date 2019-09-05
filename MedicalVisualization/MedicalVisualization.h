@@ -18,6 +18,9 @@ protected:
 private:
 	Ui::MedicalVisualizationClass ui;
 	//vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	//vtkSmartPointer<vtkRenderWindow> renderwindow =
+	//	vtkSmartPointer<vtkRenderWindow>::New();
+	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
 
 //<<<<<<< HEAD
 	//CVtkWidget *m_vtkWidget;

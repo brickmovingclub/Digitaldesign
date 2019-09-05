@@ -6,6 +6,18 @@
 
 #include "CStackWidget.h"
 #include "MedicalVisualization.h"
+#include "vtkSmartPointer.h"
+#include "vtkRenderer.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkDICOMImageReader.h"
+#include "vtkPolyDataWriter.h"
+#include "vtkContourFilter.h"
+
+
+#include "vtkPolyDataReader.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkCamera.h"
 
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
@@ -41,7 +53,6 @@ void MedicalVisualization::InitVtk()
 	renderWindowInteractor->SetInteractorStyle(style);
 	renderWindowInteractor->Initialize();
 	//renderwindow->Render();
-	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
 	m_vtkWidget->setWindowTitle("vtkWidget");
 	m_pMdiAreaCenter->addSubWindow(m_vtkWidget);
 	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
@@ -255,55 +266,36 @@ void MedicalVisualization::Reconstruction()
 	fo.ReadAscFile(name);
 	//fo.ReadAscFile("plane.asc");
 	string filename=fo.AscToPcd();
+
 	std::cout <<"filename is "<< filename << std::endl;
 	ca.ReadPclFile(filename);
 
-	pcl::PolygonMesh triangles=ca.ThreeDimensionalReconstruction();
-	// 显示
+	string filenamevtk=ca.ThreeDimensionalReconstruction();
+	// 显示,读取vtk文件
+	std::cout << "保存vtk文件：" << filenamevtk << std::endl;
+	vtkSmartPointer<vtkPolyDataReader> reader = vtkSmartPointer<vtkPolyDataReader>::New();
+	reader->SetFileName(filenamevtk.c_str());
+	reader->Update();
 
-	viewer->setBackgroundColor(0, 0, 0);
-	viewer->addPolygonMesh(triangles, "my");//设置显示的网格
-	viewer->initCameraParameters();
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(reader->GetOutputPort());
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	while (!viewer->wasStopped())
-	{
-		viewer->spinOnce(100);
-		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
-	}
+	renderer->AddActor(actor);
+	renderer->SetBackground(.3, .6, .3);
+	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
+
+	renderwindow->AddRenderer(renderer);
+	m_vtkWidget->SetRenderWindow(renderwindow);
+	m_vtkWidget->show();
 }
 
 // 显示补洞后的结果
 void MedicalVisualization::ShowHoles()
 {
-	// 读取stl文件显示
-	std::cout << "ShowHoles: " << std::endl;
-	std::string inputFilename = "play.ply";
-
-	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-	reader->SetFileName(inputFilename.c_str());
-	reader->Update();
-
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper->SetInputConnection(reader->GetOutputPort()); 
-	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-	actor->SetMapper(mapper);
-
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	renderer->AddActor(actor);
-	//renderer->SetBackground(.3, .6, .3);
-	//vtkSmartPointer<vtkRenderWindow> renderwindow =
-	//	vtkSmartPointer<vtkRenderWindow>::New();
-	//renderwindow->AddRenderer(renderer);
-	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	//	vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	//renderWindowInteractor->SetRenderWindow(renderwindow);
-	//vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-	//	vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-	//renderWindowInteractor->SetInteractorStyle(style);
-	//renderWindowInteractor->Initialize();
-	//renderwindow->Render();
-	//ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
-	//ui.qvtkWidget->show();
+	
 }
 
 // 孔洞修补
@@ -318,6 +310,37 @@ void MedicalVisualization::FillHoles()
 	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
 	fo.SavePly();
 	std::cout << "补洞完成" << std::endl;
+
+	// 读取stl文件显示
+	std::cout << "ShowHoles: " << std::endl;
+	std::string inputFilename = "play.ply";
+
+	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
+	reader->SetFileName(inputFilename.c_str());
+	reader->Update();
+
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(reader->GetOutputPort());
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
+	renderer->AddActor(actor);
+	renderer->SetBackground(.3, .6, .3);
+	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
+
+	renderwindow->AddRenderer(renderer);
+	/*vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	renderWindowInteractor->SetSize(0, 0);
+	renderWindowInteractor->SetRenderWindow(renderwindow);
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+		vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	renderWindowInteractor->SetInteractorStyle(style);
+	renderWindowInteractor->Initialize();
+	renderwindow->Render();*/
+	m_vtkWidget->SetRenderWindow(renderwindow);
+	m_vtkWidget->show();
+	//->show();
 
 }
 
