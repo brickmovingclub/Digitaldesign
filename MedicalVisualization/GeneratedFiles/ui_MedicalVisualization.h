@@ -27,8 +27,8 @@ public:
     QAction *actionFile_holes;
     QAction *actionReconstruction;
     QAction *actionShowHoles;
-    QAction *actiondomainPoints;
-    QAction *actionleafNodes;
+    QAction *actionSearchNPoints;
+    QAction *actionShowleafNodes;
     QAction *actionNew_Project;
     QAction *actionOpen_Project;
     QAction *actionSave_Project;
@@ -56,10 +56,10 @@ public:
         actionReconstruction->setObjectName(QString::fromUtf8("actionReconstruction"));
         actionShowHoles = new QAction(MedicalVisualizationClass);
         actionShowHoles->setObjectName(QString::fromUtf8("actionShowHoles"));
-        actiondomainPoints = new QAction(MedicalVisualizationClass);
-        actiondomainPoints->setObjectName(QString::fromUtf8("actiondomainPoints"));
-        actionleafNodes = new QAction(MedicalVisualizationClass);
-        actionleafNodes->setObjectName(QString::fromUtf8("actionleafNodes"));
+        actionSearchNPoints = new QAction(MedicalVisualizationClass);
+        actionSearchNPoints->setObjectName(QString::fromUtf8("actionSearchNPoints"));
+        actionShowleafNodes = new QAction(MedicalVisualizationClass);
+        actionShowleafNodes->setObjectName(QString::fromUtf8("actionShowleafNodes"));
         actionNew_Project = new QAction(MedicalVisualizationClass);
         actionNew_Project->setObjectName(QString::fromUtf8("actionNew_Project"));
         actionOpen_Project = new QAction(MedicalVisualizationClass);
@@ -104,8 +104,8 @@ public:
         menuFix->addAction(actionFile_holes);
         menuFix->addAction(actionReconstruction);
         menuFix->addAction(actionShowHoles);
-        menuPoints->addAction(actiondomainPoints);
-        menuPoints->addAction(actionleafNodes);
+        menuPoints->addAction(actionSearchNPoints);
+        menuPoints->addAction(actionShowleafNodes);
         menuFile->addAction(actionNew_Project);
         menuFile->addAction(actionOpen_Project);
         menuFile->addAction(actionSave_Project);
@@ -117,10 +117,10 @@ public:
         QObject::connect(actionFile_holes, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(FillHoles()));
         QObject::connect(actionReconstruction, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(Reconstruction()));
         QObject::connect(actionShowHoles, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(ShowHoles()));
-        QObject::connect(actiondomainPoints, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(DrawDomainPoints()));
-        QObject::connect(actionleafNodes, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(DrawLeafNodes()));
+        QObject::connect(actionShowleafNodes, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(DrawLeafNodes()));
         QObject::connect(actionImport, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(ReadFile()));
         QObject::connect(actionExport, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(SaveFile()));
+        QObject::connect(actionSearchNPoints, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(OnActionSearchNearPoints()));
 
         QMetaObject::connectSlotsByName(MedicalVisualizationClass);
     } // setupUi
@@ -131,8 +131,8 @@ public:
         actionFile_holes->setText(QApplication::translate("MedicalVisualizationClass", "File holes", nullptr));
         actionReconstruction->setText(QApplication::translate("MedicalVisualizationClass", "Reconstruction", nullptr));
         actionShowHoles->setText(QApplication::translate("MedicalVisualizationClass", "ShowHolesModel", nullptr));
-        actiondomainPoints->setText(QApplication::translate("MedicalVisualizationClass", "domainPoints", nullptr));
-        actionleafNodes->setText(QApplication::translate("MedicalVisualizationClass", "leafNodes", nullptr));
+        actionSearchNPoints->setText(QApplication::translate("MedicalVisualizationClass", "SearchNPoints", nullptr));
+        actionShowleafNodes->setText(QApplication::translate("MedicalVisualizationClass", "ShowleafNodes", nullptr));
         actionNew_Project->setText(QApplication::translate("MedicalVisualizationClass", "New Project", nullptr));
         actionOpen_Project->setText(QApplication::translate("MedicalVisualizationClass", "Open Project", nullptr));
         actionSave_Project->setText(QApplication::translate("MedicalVisualizationClass", "Save Project", nullptr));
