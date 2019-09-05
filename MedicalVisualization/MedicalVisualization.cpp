@@ -285,7 +285,7 @@ void MedicalVisualization::Reconstruction()
 }
 
 // 显示补洞后的结果
-void MedicalVisualization::ShowHoles(const char * cfilename)
+void MedicalVisualization::ShowHoles()
 {
 	
 }
@@ -539,14 +539,13 @@ void MedicalVisualization::DrawLeafNodes()
 
 void MedicalVisualization::ReadFile()
 {
-	fileoption.m_allListCEdgeBorder.clear();
 	fileoption.m_CTrianglesData.clear();
 	fileoption.m_MapPoint.clear();
 	fileoption.m_SortMapPoint.clear();
 	fileoption.normal.clear();
 	QString file_full, file_name, file_path, file_suffix;
 	QFileInfo fileinfo;
-	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
+	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("ALL Files(*);;STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
 	fileinfo = QFileInfo(file_full);
 	//文件名
 	file_name = fileinfo.fileName();
@@ -577,11 +576,10 @@ void MedicalVisualization::ReadFile()
 		renderer->AddActor(actor);
 		renderer->SetBackground(.3, .6, .3);
 		vtkSmartPointer<vtkRenderWindow> renderwindow =
-		vtkSmartPointer<vtkRenderWindow>::New();
+			vtkSmartPointer<vtkRenderWindow>::New();
 		renderwindow->AddRenderer(renderer);
 		m_vtkWidget->SetRenderWindow(renderwindow);
 		m_vtkWidget->show();
-		
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
@@ -607,6 +605,7 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
 		// 读取asc文件
+
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
 		// asc文件转换成pcd
@@ -621,9 +620,9 @@ void MedicalVisualization::SaveFile()
 	QString file_full, file_suffix;
 	QFileInfo fileinfo;
 	file_full = QFileDialog::getSaveFileName(this, tr("Save File"), "/", tr("STL(*.stl);;PLY(*.ply)"));
-	if (file_full == "") 
+	if (file_full == "")
 	{
-		return ;
+		return;
 	}
 	fileinfo = QFileInfo(file_full);
 	//文件后缀
@@ -639,4 +638,5 @@ void MedicalVisualization::SaveFile()
 	{
 		fileoption.SavePly(name1);
 	}
+
 }

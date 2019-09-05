@@ -56,6 +56,6 @@ private slots:
 	void Reconstruction();	//	重建	
 	void DrawDomainPoints(); // 查找N维领域点，并高亮显示
 	void DrawLeafNodes(); // 绘制叶子节点
-	void ShowHoles(const char * cfilename);
+	void ShowHoles();
 //>>>>>>> d8e72855f7a27854b8af6cb920225bc70af1a531
 };
