@@ -338,10 +338,8 @@ void MedicalVisualization::DrawDomainPoints()
 {
 	// TODO: 在此处添加实现代码.
 	//绘制模型
-	FileOption file;
-	file.Bin2ToStl();
-	std::map<int, MyPoint> points = file.m_SortMapPoint;
-	std::vector<CTriangles> triangles = file.m_CTrianglesData;
+	std::map<int, MyPoint> points = fileoption.m_SortMapPoint;
+	std::vector<CTriangles> triangles = fileoption.m_CTrianglesData;
 
 	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
 	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
@@ -574,11 +572,47 @@ void MedicalVisualization::ReadFile()
 		// asc文件转换成pcd
 		string pclFile=fileoption.AscToPcd();
 		// 读取pcd文件生成点云
-		calgorithm.ReadPclFile(pclFile);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = calgorithm.ReadPclFile(pclFile);
+		ShowPointCloud(cloud);
 	}
 }
 
 void MedicalVisualization::SaveFile()
 {
 
+}
+
+void MedicalVisualization::ShowPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
+	vtkPoints *points = vtkPoints::New();
+	vtkCellArray *cells = vtkCellArray::New();
+	vtkIdType idtype;
+	for (auto it = cloud->points.begin(); it != cloud->points.end(); it++)
+	{
+		idtype = points->InsertNextPoint(it->x, it->y, it->z);
+		cells->InsertNextCell(1, &idtype);
+	}
+
+	vtkPolyData *polyData = vtkPolyData::New();
+	polyData->SetPoints(points);
+	polyData->SetVerts(cells);
+
+	vtkPolyDataMapper *mapper = vtkPolyDataMapper::New();
+	mapper->SetInputData(polyData);
+
+	vtkActor *actor = vtkActor::New();
+	actor->SetMapper(mapper);
+	//设置颜色与点大小
+	actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
+	actor->GetProperty()->SetPointSize(1);
+
+	//显示
+	vtkRenderer *renderer = vtkRenderer::New();
+	renderer->AddActor(actor);
+
+	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
+	renderWindow->AddRenderer(renderer);
+
+	m_vtkWidget->SetRenderWindow(renderWindow);
+	m_vtkWidget->update();
 }
