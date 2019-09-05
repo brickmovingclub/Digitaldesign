@@ -41,7 +41,7 @@ void MedicalVisualization::InitVtk()
 	renderWindowInteractor->SetInteractorStyle(style);
 	renderWindowInteractor->Initialize();
 	//renderwindow->Render();
-	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
+	m_vtkWidget = new QVTKWidget(this);
 	m_vtkWidget->setWindowTitle("vtkWidget");
 	m_pMdiAreaCenter->addSubWindow(m_vtkWidget);
 	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
@@ -427,8 +427,8 @@ void MedicalVisualization::DrawDomainPoints()
 	iren->SetInteractorStyle(style);
 
 	iren->Initialize();
-	ui.qvtkWidget->SetRenderWindow(iren->GetRenderWindow());
-	ui.qvtkWidget->show();
+	m_vtkWidget->SetRenderWindow(iren->GetRenderWindow());
+	m_vtkWidget->update();
 }
 
 // 绘制叶子节点
@@ -522,6 +522,16 @@ void MedicalVisualization::DrawLeafNodes()
 	renderWindowInteractor->Initialize();
 	//renderWindowInteractor->Start();
 
-	ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
-	ui.qvtkWidget->show();
+	m_vtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
+	m_vtkWidget->update();
+}
+
+void MedicalVisualization::ReadFile()
+{
+
+}
+
+void MedicalVisualization::SaveFile()
+{
+
 }

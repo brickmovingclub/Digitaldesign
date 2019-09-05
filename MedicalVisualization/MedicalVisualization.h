@@ -24,7 +24,7 @@ private:
 	QMdiArea *m_pMdiAreaCenter; 
 	QMdiArea *midAreaMacros;
 	QTextEdit *m_textEditWidget;
-	
+	QVTKWidget  *m_vtkWidget;
 	//QVTKWidget  *m_vtkWidget;
 private:
 	void InitVtk();
@@ -47,6 +47,8 @@ private slots:
 
 //=======
 private slots:
+	void ReadFile();		//	打开STL、PLY、的Ascall 或二进制文件
+	void SaveFile();		//	保存STL、Ply模型
 	void FillHoles();		//	孔洞修补
 	void Reconstruction();	//	重建	
 	void DrawDomainPoints(); // 查找N维领域点，并高亮显示
