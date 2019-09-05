@@ -20,7 +20,7 @@ public:
 	static std::set<MyPoint> KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles);
 
 // 叶子节点显示
-	static void ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max);
+	static void ShowLeafNodes(pcl::PointCloud<pcl::PointXYZ>::Ptr m_cloud, std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max);
 
 // 三维重建
 	string ThreeDimensionalReconstruction();
