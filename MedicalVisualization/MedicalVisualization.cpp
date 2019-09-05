@@ -6,6 +6,7 @@
 
 #include "CStackWidget.h"
 #include "MedicalVisualization.h"
+
 //文件操作
 FileOption fileoption;
 // 算法操作
@@ -284,11 +285,6 @@ void MedicalVisualization::Reconstruction()
 	m_vtkWidget->show();
 }
 
-// 显示补洞后的结果
-void MedicalVisualization::ShowHoles()
-{
-	
-}
 
 // 孔洞修补
 void MedicalVisualization::FillHoles()
@@ -297,15 +293,13 @@ void MedicalVisualization::FillHoles()
 	//fileoption.ReadAscllStlFile("bunny.stl");
 
 	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
-	//fileoption.SavePly();
+	fileoption.SavePly("bunny.ply");
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
-	std::cout << "ShowHoles: " << std::endl;
-	std::string inputFilename = "play.ply";
 
 	vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
-	reader->SetFileName(inputFilename.c_str());
+	reader->SetFileName("bunny.ply");
 	reader->Update();
 
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -538,10 +532,13 @@ void MedicalVisualization::DrawLeafNodes()
 
 void MedicalVisualization::ReadFile()
 {
-	
+	fileoption.m_CTrianglesData.clear();
+	fileoption.m_MapPoint.clear();
+	fileoption.m_SortMapPoint.clear();
+	fileoption.normal.clear();
 	QString file_full, file_name, file_path, file_suffix;
 	QFileInfo fileinfo;
-	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
+	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("ALL Files(*);;STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
 	fileinfo = QFileInfo(file_full);
 	//文件名
 	file_name = fileinfo.fileName();
@@ -559,6 +556,23 @@ void MedicalVisualization::ReadFile()
 	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
 	{
 		fileoption.ReadAscllStlFile(name1);
+		vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
+		reader->SetFileName(name1);
+		reader->Update();
+
+		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputConnection(reader->GetOutputPort());
+		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+
+		vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+		renderer->AddActor(actor);
+		renderer->SetBackground(.3, .6, .3);
+		vtkSmartPointer<vtkRenderWindow> renderwindow =
+			vtkSmartPointer<vtkRenderWindow>::New();
+		renderwindow->AddRenderer(renderer);
+		m_vtkWidget->SetRenderWindow(renderwindow);
+		m_vtkWidget->show();
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
@@ -580,6 +594,24 @@ void MedicalVisualization::ReadFile()
 
 void MedicalVisualization::SaveFile()
 {
+	QString file_full, file_suffix;
+	QFileInfo fileinfo;
+	file_full = QFileDialog::getSaveFileName(this, tr("Save File"), "/", tr("STL(*.stl);;PLY(*.ply)"));
+	if (file_full == "")
+	{
+		return;
+	}
+	fileinfo = QFileInfo(file_full);
+	//文件后缀
+	file_suffix = fileinfo.suffix();
+	QByteArray temp;
+	temp = file_full.toLocal8Bit();
+	char *name1 = temp.data();
+	if (strcmp(file_suffix.toStdString().data(), "stl") == 0)
+	{
+		fileoption.SaveAsStl(name1);
+	}
+	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 
 }
 

@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "CTriangles.h"
-
 #include "CAlgorithm.h"
 
 using namespace std;
@@ -26,6 +24,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr CAlgorithm::ReadPclFile(string m_fileName)
 	if (pcl::io::loadPCDFile<pcl::PointXYZ>(m_fileName, *cloud) == -1)
 	{
 		std::cout << "Cloud reading failed¡£" << std::endl;
+		return cloud;
 	}
 	return cloud;
 }
