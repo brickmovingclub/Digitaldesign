@@ -54,8 +54,14 @@ VTK_MODULE_INIT(vtkRenderingFreeType);
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkLookupTable.h>
 
-
-
+#include "CStackWidget.h"
+#include "MedicalVisualization.h"
+#include "vtkRenderer.h"
+#include "vtkDICOMImageReader.h"
+#include "vtkPolyDataWriter.h"
+#include "vtkContourFilter.h"
+#include "vtkPolyDataReader.h"
+#include "vtkPolyDataMapper.h"
 
 #include <vtkPolyData.h>
 #include <vtkSTLReader.h>

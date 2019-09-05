@@ -18,13 +18,16 @@ protected:
 private:
 	Ui::MedicalVisualizationClass ui;
 	//vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	//vtkSmartPointer<vtkRenderWindow> renderwindow =
+	//	vtkSmartPointer<vtkRenderWindow>::New();
+	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
 
 //<<<<<<< HEAD
 	//CVtkWidget *m_vtkWidget;
 	QMdiArea *m_pMdiAreaCenter; 
 	QMdiArea *midAreaMacros;
 	QTextEdit *m_textEditWidget;
-	QVTKWidget  *m_vtkWidget;
+	//QVTKWidget  *m_vtkWidget;
 	//QVTKWidget  *m_vtkWidget;
 private:
 	void InitVtk();

@@ -22,7 +22,7 @@ public:
 	static void ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Eigen::Vector3f> &max);
 
 // ÈýÎ¬ÖØ½¨
-	pcl::PolygonMesh ThreeDimensionalReconstruction();
+	string ThreeDimensionalReconstruction();
 
 // ¿×¶´ÐÞ²¹
 	vector<CTriangles> HoleRepair(vector<CEdge>m_borderEdgeList, vector<CTriangles> m_CTrianglesData);

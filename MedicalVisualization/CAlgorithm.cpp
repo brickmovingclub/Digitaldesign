@@ -109,7 +109,7 @@ void CAlgorithm::ShowLeafNodes(std::vector<Eigen::Vector3f> &min, std::vector<Ei
 }
 
 // 三维重建
-pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
+string CAlgorithm::ThreeDimensionalReconstruction()
 {
 	pcl::PolygonMesh triangles;//创建多边形网格，用于存储结果
 
@@ -120,7 +120,7 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 	tree->setInputCloud(cloud);
 	n.setInputCloud(cloud);
 	n.setSearchMethod(tree);
-	n.setKSearch(20);
+	n.setKSearch(10);
 	n.compute(*normals);//法线
 	//将点云和法线放在一起
 	pcl::PointCloud<pcl::PointNormal>::Ptr Cloud_With_Normals(new pcl::PointCloud<pcl::PointNormal>);
@@ -133,7 +133,7 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 	//设置参数
 	gp3.setSearchRadius(2.5);//设置连接点之间的最大距离（最大边长）用于确定k近邻的球半径，搜索半径
 	gp3.setMu(2);//设置最近邻距离的乘子，已经得到每个点的最终搜索半径，即搜索半径
-	gp3.setMaximumNearestNeighbors(100);//设置搜索的最近邻点的最大数量
+	gp3.setMaximumNearestNeighbors(50);//设置搜索的最近邻点的最大数量
 	gp3.setMaximumSurfaceAngle(M_PI / 4);//45度最大平面角
 	gp3.setMinimumAngle(M_PI / 18);//三角形的最小角度10度
 	gp3.setMaximumAngle(2 * M_PI / 2);//三角形的最大角度120度
@@ -153,7 +153,7 @@ pcl::PolygonMesh CAlgorithm::ThreeDimensionalReconstruction()
 		//增加顶点信息
 	std::vector<int> parts = gp3.getPartIDs();
 	std::vector<int> states = gp3.getPointStates();
-	return triangles;
+	return "bunny.vtk";
 }
 
 // 孔洞修补

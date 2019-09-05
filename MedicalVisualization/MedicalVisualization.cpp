@@ -8,6 +8,8 @@
 #include "MedicalVisualization.h"
 //文件操作
 FileOption fileoption;
+// 算法操作
+CAlgorithm calgorithm;
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
 //{
@@ -244,8 +246,8 @@ void MedicalVisualization::OnActionSavedocument()
 void MedicalVisualization::Reconstruction()
 {
 	// 文件数据读取
-	FileOption fo;
-	CAlgorithm ca;
+	/*FileOption fo;
+	
 	QFile file;
 	QString f = QFileDialog::getOpenFileName(this, QString("OpenFile"),
 		QString("/"), QString("ASC(*.asc);;PCD(*.pcd)"));
@@ -254,28 +256,50 @@ void MedicalVisualization::Reconstruction()
 	char *name = temp.data();
    //	qDebug() << f;
 	fo.ReadAscFile(name);
-	//fo.ReadAscFile("plane.asc");
-	string filename=fo.AscToPcd();
+	//fo.ReadAscFile("plane.asc");*/
+	/*string filename= fileoption.AscToPcd();
+
 	std::cout <<"filename is "<< filename << std::endl;
-	ca.ReadPclFile(filename);
+	calgorithm.ReadPclFile(filename);*/
+	
+	string filenamevtk= calgorithm.ThreeDimensionalReconstruction();
+	// 显示,读取vtk文件
+	std::cout << "保存vtk文件：" << filenamevtk << std::endl;
+	vtkSmartPointer<vtkPolyDataReader> reader = vtkSmartPointer<vtkPolyDataReader>::New();
+	reader->SetFileName(filenamevtk.c_str());
+	reader->Update();
 
-	pcl::PolygonMesh triangles=ca.ThreeDimensionalReconstruction();
-	// 显示
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(reader->GetOutputPort());
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-	viewer->setBackgroundColor(0, 0, 0);
-	viewer->addPolygonMesh(triangles, "my");//设置显示的网格
-	viewer->initCameraParameters();
+	renderer->AddActor(actor);
+	renderer->SetBackground(.3, .6, .3);
+	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
 
-	while (!viewer->wasStopped())
-	{
-		viewer->spinOnce(100);
-		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
-	}
+	renderwindow->AddRenderer(renderer);
+	m_vtkWidget->SetRenderWindow(renderwindow);
+	m_vtkWidget->show();
 }
 
 // 显示补洞后的结果
 void MedicalVisualization::ShowHoles(const char * cfilename)
 {
+	
+}
+
+// 孔洞修补
+void MedicalVisualization::FillHoles()
+{
+
+	//fileoption.ReadAscllStlFile("bunny.stl");
+
+	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
+	fileoption.SavePly();
+	std::cout << "补洞完成" << std::endl;
+
 	// 读取stl文件显示
 
 
@@ -284,40 +308,27 @@ void MedicalVisualization::ShowHoles(const char * cfilename)
 	reader->Update();
 
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper->SetInputConnection(reader->GetOutputPort()); 
+	mapper->SetInputConnection(reader->GetOutputPort());
 	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
-
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
 	renderer->AddActor(actor);
-	//renderer->SetBackground(.3, .6, .3);
-	//vtkSmartPointer<vtkRenderWindow> renderwindow =
-	//	vtkSmartPointer<vtkRenderWindow>::New();
-	//renderwindow->AddRenderer(renderer);
-	//vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	//	vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	//renderWindowInteractor->SetRenderWindow(renderwindow);
-	//vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-	//	vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-	//renderWindowInteractor->SetInteractorStyle(style);
-	//renderWindowInteractor->Initialize();
-	//renderwindow->Render();
-	//ui.qvtkWidget->SetRenderWindow(renderWindowInteractor->GetRenderWindow());
-	//ui.qvtkWidget->show();
-}
+	renderer->SetBackground(.3, .6, .3);
+	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
 
-// 孔洞修补
-void MedicalVisualization::FillHoles()
-{
-	// 文件操作
-	FileOption fo;
-	// 算法
-	CAlgorithm ca;
-	fo.ReadAscllStlFile("bunny.stl");
-
-	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
-	fo.SavePly("bunny.ply");
-	std::cout << "补洞完成" << std::endl;
+	renderwindow->AddRenderer(renderer);
+	/*vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	renderWindowInteractor->SetSize(0, 0);
+	renderWindowInteractor->SetRenderWindow(renderwindow);
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+		vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	renderWindowInteractor->SetInteractorStyle(style);
+	renderWindowInteractor->Initialize();
+	renderwindow->Render();*/
+	m_vtkWidget->SetRenderWindow(renderwindow);
+	m_vtkWidget->show();
+	//->show();
 
 }
 
@@ -595,7 +606,13 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
+		// 读取asc文件
 		fileoption.ReadAscFile(name1);
+		// 显示点云数据
+		// asc文件转换成pcd
+		string pclFile=fileoption.AscToPcd();
+		// 读取pcd文件生成点云
+		calgorithm.ReadPclFile(pclFile);
 	}
 }
 
