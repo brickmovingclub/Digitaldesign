@@ -27,7 +27,7 @@ private:
 	QMdiArea *m_pMdiAreaCenter; 
 	QMdiArea *midAreaMacros;
 	QTextEdit *m_textEditWidget;
-	QVTKWidget  *m_vtkWidget;
+	//QVTKWidget  *m_vtkWidget;
 	//QVTKWidget  *m_vtkWidget;
 private:
 	void InitVtk();

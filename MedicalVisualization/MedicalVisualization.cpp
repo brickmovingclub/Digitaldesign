@@ -8,6 +8,8 @@
 #include "MedicalVisualization.h"
 //文件操作
 FileOption fileoption;
+// 算法操作
+CAlgorithm calgorithm;
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
 //{
@@ -244,8 +246,8 @@ void MedicalVisualization::OnActionSavedocument()
 void MedicalVisualization::Reconstruction()
 {
 	// 文件数据读取
-	FileOption fo;
-	CAlgorithm ca;
+	/*FileOption fo;
+	
 	QFile file;
 	QString f = QFileDialog::getOpenFileName(this, QString("OpenFile"),
 		QString("/"), QString("ASC(*.asc);;PCD(*.pcd)"));
@@ -254,13 +256,13 @@ void MedicalVisualization::Reconstruction()
 	char *name = temp.data();
    //	qDebug() << f;
 	fo.ReadAscFile(name);
-	//fo.ReadAscFile("plane.asc");
-	string filename=fo.AscToPcd();
+	//fo.ReadAscFile("plane.asc");*/
+	/*string filename= fileoption.AscToPcd();
 
 	std::cout <<"filename is "<< filename << std::endl;
-	ca.ReadPclFile(filename);
-
-	string filenamevtk=ca.ThreeDimensionalReconstruction();
+	calgorithm.ReadPclFile(filename);*/
+	
+	string filenamevtk= calgorithm.ThreeDimensionalReconstruction();
 	// 显示,读取vtk文件
 	std::cout << "保存vtk文件：" << filenamevtk << std::endl;
 	vtkSmartPointer<vtkPolyDataReader> reader = vtkSmartPointer<vtkPolyDataReader>::New();
@@ -291,14 +293,11 @@ void MedicalVisualization::ShowHoles()
 // 孔洞修补
 void MedicalVisualization::FillHoles()
 {
-	// 文件操作
-	FileOption fo;
-	// 算法
-	CAlgorithm ca;
-	fo.ReadAscllStlFile("bunny.stl");
 
-	fo.m_CTrianglesData=ca.HoleRepair(fo.m_allListCEdgeBorder, fo.m_CTrianglesData);
-	fo.SavePly();
+	//fileoption.ReadAscllStlFile("bunny.stl");
+
+	fileoption.m_CTrianglesData= calgorithm.HoleRepair(fileoption.m_allListCEdgeBorder, fileoption.m_CTrianglesData);
+	fileoption.SavePly();
 	std::cout << "补洞完成" << std::endl;
 
 	// 读取stl文件显示
@@ -569,7 +568,13 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
+		// 读取asc文件
 		fileoption.ReadAscFile(name1);
+		// 显示点云数据
+		// asc文件转换成pcd
+		string pclFile=fileoption.AscToPcd();
+		// 读取pcd文件生成点云
+		calgorithm.ReadPclFile(pclFile);
 	}
 }
 
