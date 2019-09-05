@@ -4,20 +4,9 @@
 
 #include "CTableView.h"
 
-#include "CStackWidget.h"
-#include "MedicalVisualization.h"
-#include "vtkSmartPointer.h"
-#include "vtkRenderer.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkDICOMImageReader.h"
-#include "vtkPolyDataWriter.h"
-#include "vtkContourFilter.h"
 
 
-#include "vtkPolyDataReader.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkCamera.h"
+
 
 //MedicalVisualization::MedicalVisualization(QWidget *parent)
 //	: QMainWindow(parent)
