@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <QtWidgets/QApplication>
 #include <QVTKWidget.h>
+#include <QtGui/QWheelEvent>
 
 
 #include <pcl/point_cloud.h>

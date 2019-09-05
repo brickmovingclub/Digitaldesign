@@ -2,6 +2,8 @@
 
 #include "ui_MedicalVisualization.h"
 
+#include "CTableView.h"
+#include "CTerritoryWidget.h"
 
 
 class MedicalVisualization : public QMainWindow
@@ -29,13 +31,19 @@ public:
 	QMdiArea *m_pMdiAreaCenter; 
 	QMdiArea *midAreaMacros;
 	QTextEdit *m_textEditWidget;
+<<<<<<< HEAD
 	//QVTKWidget  *m_vtkWidget;
+=======
+	QVTKWidget  *m_vtkWidget;
+	CTableView *tablePropretyView;
+	CTableView *tableMacrosView;
+>>>>>>> master_back
 	//QVTKWidget  *m_vtkWidget;
 private:
 	void InitVtk();
 	void InitScence();
 	void InitToolbar(); //	添加文档编辑工具栏
-
+	void UpdateTableView(const float area,const float volum,const int faceNum,const int vertexNum);
 private slots:
 	void on_btnCloseAll_clicked();
 	void on_btnClose_clicked();
@@ -56,10 +64,16 @@ private slots:
 	void SaveFile();		//	保存STL、Ply模型
 	void FillHoles();		//	孔洞修补
 	void Reconstruction();	//	重建	
-	void DrawDomainPoints(); // 查找N维领域点，并高亮显示
+	void DrawDomainPoints(long &num, long &step); // 查找N维领域点，并高亮显示
 	void DrawLeafNodes(); // 绘制叶子节点
+<<<<<<< HEAD
 
 public:
 	void ShowPointCloud();
+=======
+	void ShowHoles();
+	void OnActionSearchNearPoints();
+	//void GetTerritoryInfo(long &num, long &step);
+>>>>>>> master_back
 //>>>>>>> d8e72855f7a27854b8af6cb920225bc70af1a531
 };
