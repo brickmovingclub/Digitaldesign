@@ -67,7 +67,7 @@ void MedicalVisualization::InitScence()
 	m_pMdiAreaCenter->setTabsClosable(true);
 	m_pMdiAreaCenter->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	m_pMdiAreaCenter->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	m_pMdiAreaCenter->setMinimumWidth(500);
+	m_pMdiAreaCenter->setMinimumWidth(100);
 
 	// VtkWidget 
 	
@@ -89,7 +89,9 @@ void MedicalVisualization::InitScence()
 
 	//	添加QTableView
 	QDockWidget* dockWidget2 = new QDockWidget("Macros", this);
-	dockWidget2->setMaximumWidth(200);
+	dockWidget2->setMaximumSize(QSize(400, 400));
+	dockWidget2->setMinimumSize(100, 200);
+
 	midAreaMacros = new QMdiArea(this);
 
 
@@ -116,6 +118,15 @@ void MedicalVisualization::InitScence()
 
 
 	setCentralWidget(m_pMdiAreaCenter);
+
+	//	禁用功能
+	ui.actionNew_Project->setEnabled(false);
+	ui.actionOpen_Project->setEnabled(false);
+	ui.actionSave_Project->setEnabled(false);
+	ui.actionSearchNPoints->setEnabled(false);
+	ui.actionShowleafNodes->setEnabled(false);
+	ui.actionShowHoles->setEnabled(false);
+	ui.actionReconstruction->setEnabled(false);
 }
 
 void MedicalVisualization::InitToolbar()
@@ -564,7 +575,19 @@ void MedicalVisualization::ReadFile()
 
 	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
 	{
+		ui.actionSearchNPoints->setEnabled(true);
+		ui.actionShowHoles->setEnabled(true);
+
 		fileoption.ReadAscllStlFile(name1);
+		//计算模型体积与面积
+		double volume = 0, area = 0; //体积、面积
+		int pointSize = fileoption.m_SortMapPoint.size(); //顶点数
+		int triangleSize = fileoption.m_CTrianglesData.size(); //面片数
+		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
+		std::cout << volume << "\t" << area << std::endl;
+
+		//	更新显示
+		UpdateTableView(area, volume, triangleSize, pointSize);
 		vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
 		reader->SetFileName(name1);
 		reader->Update();
@@ -585,7 +608,18 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
+		ui.actionSearchNPoints->setEnabled(true);
+		ui.actionShowHoles->setEnabled(true);
+
 		fileoption.ReadPlyFile(name1);
+		//计算模型体积与面积
+		double volume = 0, area = 0; //体积、面积
+		int pointSize = fileoption.m_SortMapPoint.size(); //顶点数
+		int triangleSize = fileoption.m_CTrianglesData.size(); //面片数
+		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
+		std::cout << volume << "\t" << area << std::endl;
+		UpdateTableView(area, volume, triangleSize, pointSize);
+
 		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
 		reader->SetFileName(name1);
 		reader->Update();
@@ -606,8 +640,10 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
-		// 读取asc文件
+		ui.actionShowleafNodes->setEnabled(true);
 
+		ui.actionReconstruction->setEnabled(true);
+		// 读取asc文件
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
 		// asc文件转换成pcd
@@ -707,6 +743,7 @@ void MedicalVisualization::UpdateTableView(const float area, const float volum, 
 void MedicalVisualization::OnActionSearchNearPoints()
 {
 	CTerritoryWidget *widget = new CTerritoryWidget();
+	widget->setWindowTitle(QString::fromLocal8Bit("领域点搜索"));
 	connect(widget, SIGNAL(TerritoryChanged(long &, long &)), this, SLOT(DrawDomainPoints(long &, long &)));
 	widget->show();
 //>>>>>>> master_back
