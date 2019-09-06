@@ -553,6 +553,7 @@ void MedicalVisualization::ReadFile()
 {
 	fileoption.m_CTrianglesData.clear();
 	fileoption.m_MapPoint.clear();
+	fileoption.m_allListCEdgeBorder.clear();
 	fileoption.m_SortMapPoint.clear();
 	fileoption.normal.clear();
 	fileoption.m_allListCEdgeBorder.clear();
