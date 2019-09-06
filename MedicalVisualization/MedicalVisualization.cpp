@@ -564,6 +564,13 @@ void MedicalVisualization::ReadFile()
 	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
 	{
 		fileoption.ReadAscllStlFile(name1);
+		//计算模型体积与面积
+		double volume = 0, area = 0; //体积、面积
+		int pointSize = fileoption.m_SortMapPoint.size(); //顶点数
+		int triangleSize = fileoption.m_CTrianglesData.size(); //面片数
+		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
+		std::cout << volume << "\t" << area << std::endl;
+
 		vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
 		reader->SetFileName(name1);
 		reader->Update();
@@ -585,6 +592,13 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
 		fileoption.ReadPlyFile(name1);
+		//计算模型体积与面积
+		double volume = 0, area = 0; //体积、面积
+		int pointSize = fileoption.m_SortMapPoint.size(); //顶点数
+		int triangleSize = fileoption.m_CTrianglesData.size(); //面片数
+		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
+		std::cout << volume << "\t" << area << std::endl;
+
 		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
 		reader->SetFileName(name1);
 		reader->Update();
@@ -606,7 +620,6 @@ void MedicalVisualization::ReadFile()
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
 		// 读取asc文件
-
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
 		// asc文件转换成pcd

@@ -42,5 +42,7 @@ public:
 // 面积计算
 	double GetArea(CTriangles Triang1);
 
+// 计算模型体积与面积
+	static void CalculateVolumeAndArea(map<int, MyPoint> &points, std::vector<CTriangles> &triangle, double &volume, double &area);
 };
 
