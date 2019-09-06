@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>868</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFix">
@@ -29,14 +29,13 @@
     </property>
     <addaction name="actionFile_holes"/>
     <addaction name="actionReconstruction"/>
-    <addaction name="actionShowHoles"/>
    </widget>
    <widget class="QMenu" name="menuPoints">
     <property name="title">
      <string>Points</string>
     </property>
-    <addaction name="actiondomainPoints"/>
-    <addaction name="actionleafNodes"/>
+    <addaction name="actionSearchNPoints"/>
+    <addaction name="actionShowleafNodes"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -89,14 +88,14 @@
     <string>ShowHolesModel</string>
    </property>
   </action>
-  <action name="actiondomainPoints">
+  <action name="actionSearchNPoints">
    <property name="text">
-    <string>domainPoints</string>
+    <string>SearchNPoints</string>
    </property>
   </action>
-  <action name="actionleafNodes">
+  <action name="actionShowleafNodes">
    <property name="text">
-    <string>leafNodes</string>
+    <string>ShowleafNodes</string>
    </property>
   </action>
   <action name="actionNew_Project">
@@ -184,23 +183,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actiondomainPoints</sender>
-   <signal>triggered(bool)</signal>
-   <receiver>MedicalVisualizationClass</receiver>
-   <slot>DrawDomainPoints()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>434</x>
-     <y>298</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionleafNodes</sender>
+   <sender>actionShowleafNodes</sender>
    <signal>triggered(bool)</signal>
    <receiver>MedicalVisualizationClass</receiver>
    <slot>DrawLeafNodes()</slot>
@@ -247,14 +230,30 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSearchNPoints</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>OnActionSearchNearPoints()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>FillHoles()</slot>
   <slot>Reconstruction()</slot>
   <slot>ShowHoles()</slot>
-  <slot>DrawDomainPoints()</slot>
   <slot>DrawLeafNodes()</slot>
   <slot>ReadFile()</slot>
   <slot>SaveFile()</slot>
+  <slot>OnActionSearchNearPoints()</slot>
  </slots>
 </ui>

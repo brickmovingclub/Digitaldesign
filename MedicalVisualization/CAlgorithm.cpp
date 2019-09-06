@@ -33,10 +33,11 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr CAlgorithm::ReadPclFile(string m_fileName)
 std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles)
 {
 	int index = 0;
+	MyPoint p = points.begin()->second;
 	std::set<MyPoint> neighborPointAll; //所有的节点
-	neighborPointAll.insert(points[pointSerailNumber]);
+	neighborPointAll.insert(p);
 	std::list<MyPoint> neighborPointN; // 第N环的节点
-	neighborPointN.push_back(points[pointSerailNumber]);
+	neighborPointN.push_back(p);
 
 	for (int ring = 0; ring < n; ring++)
 	{
@@ -547,7 +548,6 @@ double CAlgorithm::GetArea(CTriangles Triang1)
 	//计算两个向量的叉乘
 	q = crossProduct(m, n);
 
-
 	a = distance(pt1, pt0);
 	b = distance(pt2, pt1);
 	c = distance(pt0, pt2);
@@ -556,4 +556,34 @@ double CAlgorithm::GetArea(CTriangles Triang1)
 	return area;
 }
 
+// 计算模型体积与面积
+void CAlgorithm::CalculateVolumeAndArea(map<int, MyPoint> &points, std::vector<CTriangles> &triangle, double &volume, double &area)
+{
+	// TODO: 在此处添加实现代码.
+	double x1, y1, z1, x2, y2, z2, x3, y3, z3;
+	double v321, v231, v312, v132, v213, v123;
+	for (auto it = triangle.begin(); it != triangle.end(); it++)
+	{
+		x1 = it->p0.x;
+		y1 = it->p0.y;
+		z1 = it->p0.z;
+		x2 = it->p1.x;
+		y2 = it->p1.y;
+		z2 = it->p1.z;
+		x3 = it->p2.x;
+		y3 = it->p2.y;
+		z3 = it->p2.z;
+		//计算体积
+		v321 = x3 * y2 * z1;
+		v231 = x2 * y3 * z1;
+		v312 = x3 * y1 * z2;
+		v132 = x1 * y3 * z2;
+		v213 = x2 * y1 * z3;
+		v123 = x1 * y2 * z3;
+		volume += ((1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123));
 
+		//计算面积
+		CAlgorithm calgorithm;
+		area += calgorithm.GetArea(*it);
+	}
+}
