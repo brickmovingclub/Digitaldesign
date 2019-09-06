@@ -544,6 +544,7 @@ void MedicalVisualization::ReadFile()
 	fileoption.m_MapPoint.clear();
 	fileoption.m_SortMapPoint.clear();
 	fileoption.normal.clear();
+	fileoption.m_allListCEdgeBorder.clear();
 	QString file_full, file_name, file_path, file_suffix;
 	QFileInfo fileinfo;
 	file_full = QFileDialog::getOpenFileName(this, QString("打开文件"), QString("."), tr("ALL Files(*);;STL(*.stl);;PLY(*.ply);;Asc(*.asc)"));
