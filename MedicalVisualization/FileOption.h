@@ -14,6 +14,7 @@ public:
 	vector<CEdge>m_allListCEdgeBorder;
 	//法向量
 	map<int, Vector3> normal;
+
 	
 	//功能函数
 	//读取ply格式文件

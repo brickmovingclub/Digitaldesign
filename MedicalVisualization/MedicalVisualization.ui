@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>868</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFix">
@@ -29,7 +29,6 @@
     </property>
     <addaction name="actionFile_holes"/>
     <addaction name="actionReconstruction"/>
-    <addaction name="actionShowHoles"/>
    </widget>
    <widget class="QMenu" name="menuPoints">
     <property name="title">

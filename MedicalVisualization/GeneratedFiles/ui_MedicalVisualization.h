@@ -77,7 +77,7 @@ public:
         MedicalVisualizationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MedicalVisualizationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 868, 23));
+        menuBar->setGeometry(QRect(0, 0, 868, 26));
         menuFix = new QMenu(menuBar);
         menuFix->setObjectName(QString::fromUtf8("menuFix"));
         menuPoints = new QMenu(menuBar);
@@ -103,7 +103,6 @@ public:
         menuBar->addAction(menuHelp->menuAction());
         menuFix->addAction(actionFile_holes);
         menuFix->addAction(actionReconstruction);
-        menuFix->addAction(actionShowHoles);
         menuPoints->addAction(actionSearchNPoints);
         menuPoints->addAction(actionShowleafNodes);
         menuFile->addAction(actionNew_Project);
