@@ -586,6 +586,8 @@ void MedicalVisualization::ReadFile()
 		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
 		std::cout << volume << "\t" << area << std::endl;
 
+		//	更新显示
+		UpdateTableView(area, volume, triangleSize, pointSize);
 		vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
 		reader->SetFileName(name1);
 		reader->Update();
@@ -616,6 +618,7 @@ void MedicalVisualization::ReadFile()
 		int triangleSize = fileoption.m_CTrianglesData.size(); //面片数
 		CAlgorithm::CalculateVolumeAndArea(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData, volume, area);
 		std::cout << volume << "\t" << area << std::endl;
+		UpdateTableView(area, volume, triangleSize, pointSize);
 
 		vtkSmartPointer<vtkPLYReader> reader = vtkSmartPointer<vtkPLYReader>::New();
 		reader->SetFileName(name1);
