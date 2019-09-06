@@ -11,11 +11,13 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -23,17 +25,15 @@ QT_BEGIN_NAMESPACE
 class Ui_Territory
 {
 public:
-    QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
+    QGridLayout *gridLayout;
     QLabel *label;
     QSpacerItem *horizontalSpacer;
     QLineEdit *lineEdit_SearchPoint;
-    QWidget *layoutWidget1;
-    QHBoxLayout *horizontalLayout_2;
     QLabel *label_2;
     QSpacerItem *horizontalSpacer_2;
     QLineEdit *lineEdit_N;
-    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout_3;
     QPushButton *pushButton_affirm;
     QSpacerItem *horizontalSpacer_3;
@@ -44,53 +44,48 @@ public:
         if (Territory->objectName().isEmpty())
             Territory->setObjectName(QString::fromUtf8("Territory"));
         Territory->resize(245, 99);
-        layoutWidget = new QWidget(Territory);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 213, 22));
-        horizontalLayout = new QHBoxLayout(layoutWidget);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(layoutWidget);
+        widget = new QWidget(Territory);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(12, 11, 231, 81));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayout = new QGridLayout();
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        label = new QLabel(widget);
         label->setObjectName(QString::fromUtf8("label"));
 
-        horizontalLayout->addWidget(label);
+        gridLayout->addWidget(label, 0, 0, 1, 1);
 
-        horizontalSpacer = new QSpacerItem(18, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer = new QSpacerItem(28, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer);
+        gridLayout->addItem(horizontalSpacer, 0, 1, 1, 1);
 
-        lineEdit_SearchPoint = new QLineEdit(layoutWidget);
+        lineEdit_SearchPoint = new QLineEdit(widget);
         lineEdit_SearchPoint->setObjectName(QString::fromUtf8("lineEdit_SearchPoint"));
 
-        horizontalLayout->addWidget(lineEdit_SearchPoint);
+        gridLayout->addWidget(lineEdit_SearchPoint, 0, 2, 1, 1);
 
-        layoutWidget1 = new QWidget(Territory);
-        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 40, 218, 22));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget1);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_2 = new QLabel(layoutWidget1);
+        label_2 = new QLabel(widget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
-        horizontalLayout_2->addWidget(label_2);
+        gridLayout->addWidget(label_2, 1, 0, 1, 1);
 
-        horizontalSpacer_2 = new QSpacerItem(17, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(18, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_2->addItem(horizontalSpacer_2);
+        gridLayout->addItem(horizontalSpacer_2, 1, 1, 1, 1);
 
-        lineEdit_N = new QLineEdit(layoutWidget1);
+        lineEdit_N = new QLineEdit(widget);
         lineEdit_N->setObjectName(QString::fromUtf8("lineEdit_N"));
 
-        horizontalLayout_2->addWidget(lineEdit_N);
+        gridLayout->addWidget(lineEdit_N, 1, 2, 1, 1);
 
-        layoutWidget2 = new QWidget(Territory);
-        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(20, 70, 204, 25));
-        horizontalLayout_3 = new QHBoxLayout(layoutWidget2);
+
+        verticalLayout->addLayout(gridLayout);
+
+        horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        pushButton_affirm = new QPushButton(layoutWidget2);
+        pushButton_affirm = new QPushButton(widget);
         pushButton_affirm->setObjectName(QString::fromUtf8("pushButton_affirm"));
 
         horizontalLayout_3->addWidget(pushButton_affirm);
@@ -99,10 +94,13 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_3);
 
-        pushButton_cancel = new QPushButton(layoutWidget2);
+        pushButton_cancel = new QPushButton(widget);
         pushButton_cancel->setObjectName(QString::fromUtf8("pushButton_cancel"));
 
         horizontalLayout_3->addWidget(pushButton_cancel);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
 
 
         retranslateUi(Territory);
