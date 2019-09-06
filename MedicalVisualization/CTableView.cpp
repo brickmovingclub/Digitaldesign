@@ -119,7 +119,7 @@ int CTableView::rowCount()
 void CTableView::initHeader()
 {
 	QStringList horizonHeader;
-	horizonHeader << "Value";
+	horizonHeader << "Value"<<"Unit";
 	//horizonHeader << "NO" << "Time" << "UE" << "S-ENB" << "T-ENB" << "S-MME" << "T-MME" << "SGSN"
 	//	<< "S-SGW" << "T-SGW" << "PGW/GGSN" << "HSS/EIR" << "PCRF" << "AAA/ALP" << "AF";
 	mymodel->setHorizontalHeaderList(horizonHeader);

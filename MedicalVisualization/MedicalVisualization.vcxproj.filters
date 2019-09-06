@@ -75,6 +75,9 @@
     <ClCompile Include="CTerritoryWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CStackWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -121,6 +124,9 @@
     <QtMoc Include="CTerritoryWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="cstackwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MedicalVisualization.qrc">
@@ -135,6 +141,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="Territory.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CStackWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
