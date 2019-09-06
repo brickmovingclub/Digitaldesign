@@ -38,6 +38,7 @@ VTK_MODULE_INIT(vtkRenderingFreeType);
 #include <vtkPolyData.h>
 #include <vtkSTLReader.h>
 #include <vtkPLYReader.h>
+#include <vtkPLYWriter.h>
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
