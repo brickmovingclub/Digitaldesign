@@ -19,26 +19,17 @@ protected:
 
 private:
 	Ui::MedicalVisualizationClass ui;
-	//vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	//vtkSmartPointer<vtkRenderWindow> renderwindow =
-	//	vtkSmartPointer<vtkRenderWindow>::New();
-	QVTKWidget  *m_vtkWidget = new QVTKWidget(this);
 public:
 	pcl::PointCloud<pcl::PointXYZ>::Ptr m_cloud;
 
-//<<<<<<< HEAD
-	//CVtkWidget *m_vtkWidget;
+
 	QMdiArea *m_pMdiAreaCenter; 
 	QMdiArea *midAreaMacros;
 	QTextEdit *m_textEditWidget;
-<<<<<<< HEAD
-	//QVTKWidget  *m_vtkWidget;
-=======
+
 	QVTKWidget  *m_vtkWidget;
 	CTableView *tablePropretyView;
 	CTableView *tableMacrosView;
->>>>>>> master_back
-	//QVTKWidget  *m_vtkWidget;
 private:
 	void InitVtk();
 	void InitScence();
@@ -58,7 +49,7 @@ private slots:
 	void OnActionOpendocument();
 	void OnActionSavedocument();
 
-//=======
+
 private slots:
 	void ReadFile();		//	打开STL、PLY、的Ascall 或二进制文件
 	void SaveFile();		//	保存STL、Ply模型
@@ -66,14 +57,8 @@ private slots:
 	void Reconstruction();	//	重建	
 	void DrawDomainPoints(long &num, long &step); // 查找N维领域点，并高亮显示
 	void DrawLeafNodes(); // 绘制叶子节点
-<<<<<<< HEAD
 
-public:
 	void ShowPointCloud();
-=======
-	void ShowHoles();
 	void OnActionSearchNearPoints();
-	//void GetTerritoryInfo(long &num, long &step);
->>>>>>> master_back
-//>>>>>>> d8e72855f7a27854b8af6cb920225bc70af1a531
+
 };

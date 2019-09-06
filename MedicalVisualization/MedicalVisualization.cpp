@@ -654,7 +654,7 @@ void MedicalVisualization::ShowPointCloud()
 		cells->InsertNextCell(1, &idtype);
 	}
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	vtkPolyData *polyData = vtkPolyData::New();
 	polyData->SetPoints(points);
 	polyData->SetVerts(cells);
@@ -678,7 +678,7 @@ void MedicalVisualization::ShowPointCloud()
 
 	m_vtkWidget->SetRenderWindow(renderWindow);
 	m_vtkWidget->update();
-=======
+//=======
 }
 
 void MedicalVisualization::UpdateTableView(const float area, const float volum, const int faceNum, const int vertexNum)
@@ -708,5 +708,5 @@ void MedicalVisualization::OnActionSearchNearPoints()
 	CTerritoryWidget *widget = new CTerritoryWidget();
 	connect(widget, SIGNAL(TerritoryChanged(long &, long &)), this, SLOT(DrawDomainPoints(long &, long &)));
 	widget->show();
->>>>>>> master_back
+//>>>>>>> master_back
 }

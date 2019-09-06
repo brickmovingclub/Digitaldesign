@@ -33,10 +33,11 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr CAlgorithm::ReadPclFile(string m_fileName)
 std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles)
 {
 	int index = 0;
+	MyPoint p = points.begin()->second;
 	std::set<MyPoint> neighborPointAll; //所有的节点
-	neighborPointAll.insert(points[pointSerailNumber]);
+	neighborPointAll.insert(p);
 	std::list<MyPoint> neighborPointN; // 第N环的节点
-	neighborPointN.push_back(points[pointSerailNumber]);
+	neighborPointN.push_back(p);
 
 	for (int ring = 0; ring < n; ring++)
 	{
