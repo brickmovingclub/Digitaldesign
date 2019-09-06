@@ -60,6 +60,21 @@
     <ClCompile Include="CTableView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CTableModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeaderView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineEditDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerritoryWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -91,6 +106,21 @@
     <QtMoc Include="CTableView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="CTableModel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CHeaderView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ArrowDelegate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LineEditDelegate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CTerritoryWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MedicalVisualization.qrc">
@@ -102,6 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MedicalVisualization.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Territory.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

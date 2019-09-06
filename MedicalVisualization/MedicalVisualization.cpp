@@ -1,10 +1,5 @@
 #include "stdafx.h"
 
-#include "CVtkWidget.h"
-
-#include "CTableView.h"
-
-#include "CStackWidget.h"
 #include "MedicalVisualization.h"
 
 //文件操作
@@ -30,6 +25,15 @@ MedicalVisualization::MedicalVisualization(QWidget *parent)
 	InitScence();
 	InitVtk();
 
+
+	// 去掉下划线
+	foreach(QTabBar* tab, m_pMdiAreaCenter->findChildren<QTabBar *>())
+	{
+		//tab->setDrawBase(false);// 不绘制 底边（默认，QTabBar下面有条黑边）
+		//tab->setBaseSize(QSize(5, 5)); 
+		//tab->setMaximumWidth(50);
+		//tab->setFixedSize(QSize(50, 10));
+	}
 }
 
 void MedicalVisualization::InitVtk()
@@ -63,6 +67,7 @@ void MedicalVisualization::InitScence()
 	m_pMdiAreaCenter->setTabsClosable(true);
 	m_pMdiAreaCenter->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	m_pMdiAreaCenter->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	m_pMdiAreaCenter->setMinimumWidth(500);
 
 	// VtkWidget 
 	
@@ -74,13 +79,7 @@ void MedicalVisualization::InitScence()
 	m_textEditWidget->setHtml("Cccccc");
 	m_pMdiAreaCenter->addSubWindow(m_textEditWidget);     //将window1放进mdiArea框架
 
-	// 去掉下划线
-	foreach(QTabBar* tab, m_pMdiAreaCenter->findChildren<QTabBar *>())
-	{
-		tab->setDrawBase(false);// 不绘制 底边（默认，QTabBar下面有条黑边）
-		//tab->setBaseSize(QSize(5, 5)); 
-		//tab->setMaximumWidth(20);
-	}
+	
 
 	//	添加QTreeView
 	QDockWidget* dockWidget1 = new QDockWidget("Object tree", this);
@@ -90,9 +89,16 @@ void MedicalVisualization::InitScence()
 
 	//	添加QTableView
 	QDockWidget* dockWidget2 = new QDockWidget("Macros", this);
+	dockWidget2->setMaximumWidth(200);
 	midAreaMacros = new QMdiArea(this);
-	CTableView *tableView1 = new CTableView();
-	CTableView *tableView2 = new CTableView();
+
+
+	tablePropretyView = new CTableView(dockWidget2);
+	tableMacrosView = new CTableView(dockWidget2);
+
+	tablePropretyView->setWindowTitle("proprety");
+	tableMacrosView->setWindowTitle("Macros");
+
 
 	midAreaMacros->setViewMode(QMdiArea::TabbedView);
 	midAreaMacros->setTabShape(QTabWidget::Triangular);
@@ -102,8 +108,8 @@ void MedicalVisualization::InitScence()
 	midAreaMacros->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	midAreaMacros->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-	midAreaMacros->addSubWindow(tableView1);
-	midAreaMacros->addSubWindow(tableView2);
+	midAreaMacros->addSubWindow(tablePropretyView);
+	midAreaMacros->addSubWindow(tableMacrosView);
 
 	dockWidget2->setWidget(midAreaMacros);
 	this->addDockWidget(Qt::RightDockWidgetArea, dockWidget2);
@@ -328,8 +334,10 @@ void MedicalVisualization::FillHoles()
 }
 
 // 查找N维领域点，并高亮显示
-void MedicalVisualization::DrawDomainPoints()
+void MedicalVisualization::DrawDomainPoints(long &num, long &step)
 {
+	 
+	UpdateTableView(125.0, 125.0, 12111, 3655);
 	// TODO: 在此处添加实现代码.
 	//绘制模型
 	std::map<int, MyPoint> points = fileoption.m_SortMapPoint;
@@ -369,7 +377,7 @@ void MedicalVisualization::DrawDomainPoints()
 	lineActor->GetProperty()->SetLineWidth(1);
 
 	//绘制领域点
-	int pointSerailNumber = 0, n = 5;
+	int pointSerailNumber = num, n = step;
 	std::set<MyPoint> neighborPoints = CAlgorithm::KOrderDomain(pointSerailNumber, n, points, triangles);
 	std::cout << "neighborPoints:" << neighborPoints.size() << std::endl;
 
@@ -647,6 +655,7 @@ void MedicalVisualization::ShowPointCloud()
 		cells->InsertNextCell(1, &idtype);
 	}
 
+//<<<<<<< HEAD
 	vtkPolyData *polyData = vtkPolyData::New();
 	polyData->SetPoints(points);
 	polyData->SetVerts(cells);
@@ -670,4 +679,35 @@ void MedicalVisualization::ShowPointCloud()
 
 	m_vtkWidget->SetRenderWindow(renderWindow);
 	m_vtkWidget->update();
+//=======
+}
+
+void MedicalVisualization::UpdateTableView(const float area, const float volum, const int faceNum, const int vertexNum)
+{
+	QStringList strList1, strList2, strList3, strList4;
+
+	QString strArea = QString::number(area);
+	strList1 << strArea;
+	tablePropretyView->addRow(strList1);
+
+	QString strVolum = QString::number(volum);
+	strList2 << strVolum;
+	tablePropretyView->addRow(strList2);
+
+	QString strfaceNum = QString::number(faceNum);
+	strList3 << strfaceNum;
+	tablePropretyView->addRow(strList3);
+
+	QString strvertexNum = QString::number(vertexNum);
+	strList4 << strvertexNum;
+	tablePropretyView->addRow(strList4);
+
+}
+
+void MedicalVisualization::OnActionSearchNearPoints()
+{
+	CTerritoryWidget *widget = new CTerritoryWidget();
+	connect(widget, SIGNAL(TerritoryChanged(long &, long &)), this, SLOT(DrawDomainPoints(long &, long &)));
+	widget->show();
+//>>>>>>> master_back
 }
