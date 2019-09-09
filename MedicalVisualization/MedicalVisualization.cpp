@@ -440,7 +440,7 @@ void MedicalVisualization::DrawDomainPoints(long &num, long &step)
 	renderer->AddActor(lineActor);
 	renderer->AddActor(actor);
 	renderer->AddActor(actorCenter);
-
+	renderer->SetBackground(.3, .6, .3);
 	vtkRenderWindow *renderWindow = vtkRenderWindow::New();
 	renderWindow->AddRenderer(renderer);
 
@@ -539,7 +539,7 @@ void MedicalVisualization::DrawLeafNodes()
 
 	//vtkInteractorStyleTrackballCamera *style = vtkInteractorStyleTrackballCamera::New();
 	//renderWindowInteractor->SetInteractorStyle(style);
-
+	renderer->SetBackground(.3, .6, .3);
 	renderer->AddActor(lineActor);
 	renderWindow->Render();
 
@@ -574,12 +574,15 @@ void MedicalVisualization::ReadFile()
 	QByteArray temp = file_path.toStdString().data();
 	temp = file_full.toLocal8Bit();
 	char *name1 = temp.data();
+	ui.actionSearchNPoints->setEnabled(true);
+	ui.actionFile_holes->setEnabled(true);
+	ui.actionReconstruction->setEnabled(true);
 
+	ui.actionShowleafNodes->setEnabled(true);
 	if (strcmp(file_suffix.toStdString().data(),"stl") == 0)
 	{
-		ui.actionSearchNPoints->setEnabled(true);
-		ui.actionShowHoles->setEnabled(true);
 
+		ui.actionReconstruction->setEnabled(false);
 		fileoption.ReadAscllStlFile(name1);
 		//计算模型体积与面积
 		double volume = 0, area = 0; //体积、面积
@@ -610,8 +613,9 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "ply") == 0)
 	{
-		ui.actionSearchNPoints->setEnabled(true);
-		ui.actionShowHoles->setEnabled(true);
+	
+
+		ui.actionReconstruction->setEnabled(false);
 
 		fileoption.ReadPlyFile(name1);
 		//计算模型体积与面积
@@ -642,9 +646,7 @@ void MedicalVisualization::ReadFile()
 	}
 	else if (strcmp(file_suffix.toStdString().data(), "asc") == 0)
 	{
-		ui.actionShowleafNodes->setEnabled(true);
-
-		ui.actionReconstruction->setEnabled(true);
+		ui.actionFile_holes->setEnabled(false);
 		// 读取asc文件
 		fileoption.ReadAscFile(name1);
 		// 显示点云数据
