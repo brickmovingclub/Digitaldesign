@@ -326,9 +326,9 @@ void MedicalVisualization::FillHoles()
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
 	renderer->AddActor(actor);
+	
 	renderer->SetBackground(.3, .6, .3);
 	vtkSmartPointer<vtkRenderWindow> renderwindow = vtkSmartPointer<vtkRenderWindow>::New();
-
 	renderwindow->AddRenderer(renderer);
 	/*vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetSize(0, 0);
@@ -341,6 +341,7 @@ void MedicalVisualization::FillHoles()
 	m_vtkWidget->SetRenderWindow(renderwindow);
 	m_vtkWidget->show();
 	//->show();
+	
 
 }
 
