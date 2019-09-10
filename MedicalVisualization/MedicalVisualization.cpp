@@ -583,6 +583,7 @@ void MedicalVisualization::ReadFile()
 	{
 
 		ui.actionReconstruction->setEnabled(false);
+		ui.actionShowleafNodes->setEnabled(false);
 		fileoption.ReadAscllStlFile(name1);
 		//计算模型体积与面积
 		double volume = 0, area = 0; //体积、面积
@@ -616,7 +617,7 @@ void MedicalVisualization::ReadFile()
 	
 
 		ui.actionReconstruction->setEnabled(false);
-
+		ui.actionShowleafNodes->setEnabled(false);
 		fileoption.ReadPlyFile(name1);
 		//计算模型体积与面积
 		double volume = 0, area = 0; //体积、面积

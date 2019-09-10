@@ -175,7 +175,7 @@ bool FileOption::ReadAscllStlFile(const char * cfilename)
 	//关闭文件，释放内存
 	fclose(pfile);
 	ios::sync_with_stdio(false);
-	if (buffer[79] != '\0')//判断格式
+	if (buffer[79] != '/0')//判断格式
 	{
 		ReadAscllStl(buffer);
 	
