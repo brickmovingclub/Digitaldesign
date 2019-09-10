@@ -141,6 +141,9 @@ bool FileOption::ReadPly(const char * buffer)
 //读取ASCLL码STL文件
 bool FileOption::ReadAscllStlFile(const char * cfilename)
 {
+	string title;
+	string headStr;
+	string SecondStr;
 	FILE *pfile;
 	long  size;
 	char *buffer;
@@ -175,19 +178,30 @@ bool FileOption::ReadAscllStlFile(const char * cfilename)
 	//关闭文件，释放内存
 	fclose(pfile);
 	ios::sync_with_stdio(false);
-	if (buffer[79] != '/0')//判断格式
+	ifstream in(cfilename);
+	//in.get();
+	//getline(in, title);
+	getline(in, headStr);
+	getline(in, SecondStr);
+	if (headStr.empty())
+		return false;
+	int noempty = 0;
+	while (SecondStr[noempty] == ' ')
+		noempty++;
+
+	if ((headStr[0] == 's') && (SecondStr[noempty] == 'f'))
 	{
+		std::cout << "ASCII File." << std::endl;
 		ReadAscllStl(buffer);
-	
 	}
 	else
 	{
+		std::cout << "Binary File." << std::endl;
 		ReadBinary(buffer);
 	}
 	ios::sync_with_stdio(true);
 	free(buffer);
 	return true;
-	
 }
 
 bool FileOption::ReadAscllStl(const char * buffer)
