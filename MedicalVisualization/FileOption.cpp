@@ -289,11 +289,25 @@ bool FileOption::ReadAscllStl(const char * buffer)
 	i = 0;
 	std::cout <<"±ßµÄÊýÁ¿£º" <<m_allListCEdgeBorder.size() << std::endl;
 	i = 0;
+	map<MyPoint, int> m_mapPoint;
 	for (map<MyPoint, MyPoint>::iterator it = m_MapPoint.begin(); it != m_MapPoint.end(); it++)
 	{
 		m_SortMapPoint.insert(pair<int, MyPoint>(i, it->second));
+		m_mapPoint.insert(pair<MyPoint, int>(it->second, i));
 		i++;
 	}
+	map<MyPoint, int>::iterator v;
+	for (auto it = m_CTrianglesData.begin(); it != m_CTrianglesData.end(); it++) 
+	{
+		v = m_mapPoint.find(it->p0);
+		it->mp0 = v->second;
+		v = m_mapPoint.find(it->p1);
+		it->mp0 = v->second;
+		v = m_mapPoint.find(it->p2);
+		it->mp0 = v->second;
+	}
+	
+	
 	return true;
 }
 
