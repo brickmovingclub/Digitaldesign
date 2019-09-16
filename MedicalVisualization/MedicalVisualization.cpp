@@ -753,3 +753,58 @@ void MedicalVisualization::OnActionSearchNearPoints()
 	widget->show();
 //>>>>>>> master_back
 }
+
+// 去除模型中离散的三角形
+void MedicalVisualization::RemoveDiscreteTriangles()
+{
+	// TODO: 在此处添加实现代码.
+	//去除离散三角形
+	CAlgorithm::RemoveDiscreteTriangles(fileoption.m_SortMapPoint, fileoption.m_CTrianglesData);
+
+	//绘制模型
+	std::map<int, MyPoint> points = fileoption.m_SortMapPoint;
+	std::vector<CTriangles> triangles = fileoption.m_CTrianglesData;
+
+	vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
+	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
+
+	int count = 0;
+	for (auto it = triangles.begin(); it != triangles.end(); it++, count++)
+	{
+		double p0[3] = { it->p0.x, it->p0.y, it->p0.z };
+		double p1[3] = { it->p1.x, it->p1.y, it->p1.z };
+		double p2[3] = { it->p2.x, it->p2.y, it->p2.z };
+		pts->InsertNextPoint(p0);//ID = 3 * count + 0;
+		pts->InsertNextPoint(p1);//ID = 3 * count + 1;
+		pts->InsertNextPoint(p2);//ID = 3 * count + 2;
+
+		vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
+		polyLine->GetPointIds()->SetNumberOfIds(4);
+		for (unsigned int i = 0; i < 3; i++)
+			polyLine->GetPointIds()->SetId(i, count * 3 + i);
+		polyLine->GetPointIds()->SetId(3, count * 3 + 0);
+		lines->InsertNextCell(polyLine);
+	}
+
+	vtkSmartPointer<vtkPolyData> linesPolyData = vtkSmartPointer<vtkPolyData>::New();
+	linesPolyData->SetPoints(pts);
+	linesPolyData->SetLines(lines);
+
+	vtkSmartPointer<vtkPolyDataMapper> linesMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	linesMapper->SetInputData(linesPolyData);
+
+	vtkSmartPointer<vtkActor> lineActor = vtkSmartPointer<vtkActor>::New();
+	lineActor->SetMapper(linesMapper);
+	lineActor->GetProperty()->SetColor(1, 1, 1);
+	lineActor->GetProperty()->SetLineWidth(1);
+
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	renderer->AddActor(lineActor);
+	renderer->SetBackground(.3, .6, .3);
+
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer(renderer);
+
+	m_vtkWidget->SetRenderWindow(renderWindow);
+	m_vtkWidget->update();
+}

@@ -44,5 +44,8 @@ public:
 
 // 计算模型体积与面积
 	static void CalculateVolumeAndArea(map<int, MyPoint> &points, std::vector<CTriangles> &triangle, double &volume, double &area);
+
+	// 去除离散三角形
+	static void RemoveDiscreteTriangles(std::map<int, MyPoint> &points, std::vector<CTriangles> &triangles);
 };
 

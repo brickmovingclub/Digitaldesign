@@ -60,5 +60,5 @@ private slots:
 
 	void ShowPointCloud();
 	void OnActionSearchNearPoints();
-
+	void RemoveDiscreteTriangles();
 };

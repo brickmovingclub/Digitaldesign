@@ -11,7 +11,6 @@ CAlgorithm::CAlgorithm()
 
 }
 
-
 CAlgorithm::~CAlgorithm()
 {
 }
@@ -33,45 +32,35 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr CAlgorithm::ReadPclFile(string m_fileName)
 std::set<MyPoint> CAlgorithm::KOrderDomain(int pointSerailNumber, int n, std::map<int, MyPoint> points, std::vector<CTriangles> triangles)
 {
 	int index = 0;
-	//MyPoint p = points.begin()->second;
 	std::set<MyPoint> neighborPointAll; //所有的节点
 	neighborPointAll.insert(points[pointSerailNumber]);
-	std::list<MyPoint> neighborPointN; // 第N环的节点
-	neighborPointN.push_back(points[pointSerailNumber]);
-
+	std::list<int> neighborPointN; // 第N环的节点
+	neighborPointN.push_back(pointSerailNumber);
 	for (int ring = 0; ring < n; ring++)
 	{
 		// 第ring环的节点
 		int ringSize = neighborPointN.size();// 当前环节点的个数
 		for (int i = 0; i < ringSize && !neighborPointN.empty(); i++)
 		{
-			//找到点p的编号
-			MyPoint p = neighborPointN.front();
-			for (auto it = points.begin(); it != points.end(); it++)
-			{
-				if (it->second == p)
-				{
-					index = it->first;
-					break;
-				}
-			}
+			//找到点的编号
+			index = neighborPointN.front();
 			neighborPointN.pop_front();
 			//寻找节点index的邻居节点
 			for (auto it = points[index].m_TrianglesList.begin(); it != points[index].m_TrianglesList.end(); it++)
 			{
 				if (neighborPointAll.count(triangles[*it].p0) == 0)
 				{
-					neighborPointN.push_back(triangles[*it].p0);
+					neighborPointN.push_back(triangles[*it].mp0);
 					neighborPointAll.insert(triangles[*it].p0);
 				}
 				if (neighborPointAll.count(triangles[*it].p1) == 0)
 				{
-					neighborPointN.push_back(triangles[*it].p1);
+					neighborPointN.push_back(triangles[*it].mp1);
 					neighborPointAll.insert(triangles[*it].p1);
 				}
 				if (neighborPointAll.count(triangles[*it].p2) == 0)
 				{
-					neighborPointN.push_back(triangles[*it].p2);
+					neighborPointN.push_back(triangles[*it].mp2);
 					neighborPointAll.insert(triangles[*it].p2);
 				}
 			}
@@ -585,5 +574,88 @@ void CAlgorithm::CalculateVolumeAndArea(map<int, MyPoint> &points, std::vector<C
 		//计算面积
 		CAlgorithm calgorithm;
 		area += calgorithm.GetArea(*it);
+	}
+}
+
+// 去除离散三角形
+void CAlgorithm::RemoveDiscreteTriangles(std::map<int, MyPoint> &points, std::vector<CTriangles> &triangles)
+{
+	// TODO: 在此处添加实现代码.
+
+	std::vector<std::map<int, MyPoint>> model;
+	while (!points.empty())
+	{
+		int pointSerailNumber = points.begin()->first;
+		int index = 0;
+		std::map<int, MyPoint> neighborPointAll; //所有的领域节点
+		neighborPointAll.insert(pair<int, MyPoint>(pointSerailNumber, points[pointSerailNumber]));
+		std::list<int> neighborPointN; // 第N环的节点
+		neighborPointN.push_back(pointSerailNumber);
+
+		//找到点pointSerailNumber的所有领域节点
+		while (!neighborPointN.empty())
+		{
+			int ringSize = neighborPointN.size();// 当前环节点的个数
+			for (int i = 0; i < ringSize; i++)
+			{	
+				index = neighborPointN.front();
+				neighborPointN.pop_front();
+				//寻找节点index的邻居节点
+				for (auto it = points[index].m_TrianglesList.begin(); it != points[index].m_TrianglesList.end(); it++)
+				{
+					if (neighborPointAll.count(triangles[*it].mp0) == 0)
+					{
+						neighborPointN.push_back(triangles[*it].mp0);
+						neighborPointAll.insert(pair<int, MyPoint>(triangles[*it].mp0, triangles[*it].p0));
+					}
+					if (neighborPointAll.count(triangles[*it].mp1) == 0)
+					{
+						neighborPointN.push_back(triangles[*it].mp1);
+						neighborPointAll.insert(pair<int, MyPoint>(triangles[*it].mp1, triangles[*it].p1));
+					}
+					if (neighborPointAll.count(triangles[*it].mp2) == 0)
+					{
+						neighborPointN.push_back(triangles[*it].mp2);
+						neighborPointAll.insert(pair<int, MyPoint>(triangles[*it].mp2, triangles[*it].p2));
+					}
+				}
+			}
+		}
+		
+		//从points中删除已经找到的领域点
+		for (auto it = points.begin(); it != points.end(); )
+		{
+			if (neighborPointAll.count(it->first) == 0)
+			{
+				it++;
+			}
+			else
+			{
+				it = points.erase(it);
+			}
+		}
+		model.push_back(neighborPointAll);
+	}
+	
+	int max = 0;
+	for (int i = 0; i < model.size(); i++)
+	{
+		if (model[i].size() > max)
+		{
+			max = model[i].size();
+			points = model[i];
+		}
+	}
+
+	for (auto it = triangles.begin(); it != triangles.end(); )
+	{
+		if ((points.count(it->mp0) == 0) && (points.count(it->mp1) == 0) && (points.count(it->mp2) == 0))
+		{
+			it = triangles.erase(it);
+		}
+		else
+		{
+			it++;
+		}
 	}
 }

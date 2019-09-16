@@ -29,6 +29,7 @@
     </property>
     <addaction name="actionFile_holes"/>
     <addaction name="actionReconstruction"/>
+    <addaction name="actionremove_discrete_triangles"/>
    </widget>
    <widget class="QMenu" name="menuPoints">
     <property name="title">
@@ -126,6 +127,11 @@
   <action name="actionImport">
    <property name="text">
     <string>Import</string>
+   </property>
+  </action>
+  <action name="actionremove_discrete_triangles">
+   <property name="text">
+    <string>remove discrete triangles</string>
    </property>
   </action>
  </widget>
@@ -246,6 +252,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionremove_discrete_triangles</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MedicalVisualizationClass</receiver>
+   <slot>RemoveDiscreteTriangles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>FillHoles()</slot>
@@ -255,5 +277,6 @@
   <slot>ReadFile()</slot>
   <slot>SaveFile()</slot>
   <slot>OnActionSearchNearPoints()</slot>
+  <slot>RemoveDiscreteTriangles()</slot>
  </slots>
 </ui>

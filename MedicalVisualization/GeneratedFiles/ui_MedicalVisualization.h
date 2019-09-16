@@ -35,6 +35,7 @@ public:
     QAction *actionExport;
     QAction *actionExit;
     QAction *actionImport;
+    QAction *actionremove_discrete_triangles;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFix;
@@ -72,6 +73,8 @@ public:
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
         actionImport = new QAction(MedicalVisualizationClass);
         actionImport->setObjectName(QString::fromUtf8("actionImport"));
+        actionremove_discrete_triangles = new QAction(MedicalVisualizationClass);
+        actionremove_discrete_triangles->setObjectName(QString::fromUtf8("actionremove_discrete_triangles"));
         centralWidget = new QWidget(MedicalVisualizationClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MedicalVisualizationClass->setCentralWidget(centralWidget);
@@ -103,6 +106,7 @@ public:
         menuBar->addAction(menuHelp->menuAction());
         menuFix->addAction(actionFile_holes);
         menuFix->addAction(actionReconstruction);
+        menuFix->addAction(actionremove_discrete_triangles);
         menuPoints->addAction(actionSearchNPoints);
         menuPoints->addAction(actionShowleafNodes);
         menuFile->addAction(actionNew_Project);
@@ -120,6 +124,7 @@ public:
         QObject::connect(actionImport, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(ReadFile()));
         QObject::connect(actionExport, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(SaveFile()));
         QObject::connect(actionSearchNPoints, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(OnActionSearchNearPoints()));
+        QObject::connect(actionremove_discrete_triangles, SIGNAL(triggered(bool)), MedicalVisualizationClass, SLOT(RemoveDiscreteTriangles()));
 
         QMetaObject::connectSlotsByName(MedicalVisualizationClass);
     } // setupUi
@@ -138,6 +143,7 @@ public:
         actionExport->setText(QApplication::translate("MedicalVisualizationClass", "Export", nullptr));
         actionExit->setText(QApplication::translate("MedicalVisualizationClass", "Exit", nullptr));
         actionImport->setText(QApplication::translate("MedicalVisualizationClass", "Import", nullptr));
+        actionremove_discrete_triangles->setText(QApplication::translate("MedicalVisualizationClass", "remove discrete triangles", nullptr));
         menuFix->setTitle(QApplication::translate("MedicalVisualizationClass", "Fix", nullptr));
         menuPoints->setTitle(QApplication::translate("MedicalVisualizationClass", "Points", nullptr));
         menuFile->setTitle(QApplication::translate("MedicalVisualizationClass", "File", nullptr));
