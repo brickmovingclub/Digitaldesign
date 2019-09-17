@@ -5,6 +5,7 @@
   <PropertyGroup>
     <IncludePath>C:\Program Files\PCL 1.9.1\include\pcl-1.9;C:\Program Files\PCL 1.9.1\3rdParty\Boost\include\boost-1_68;C:\Program Files\PCL 1.9.1\3rdParty\Eigen\eigen3;C:\Program Files\PCL 1.9.1\3rdParty\FLANN\include;C:\Program Files\PCL 1.9.1\3rdParty\Qhull\include;C:\Program Files\OpenNI2\Include;C:\VTK\include\vtk-8.1;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\PCL 1.9.1\lib;C:\Program Files\PCL 1.9.1\3rdParty\Boost\lib;C:\Program Files\PCL 1.9.1\3rdParty\FLANN\lib;C:\Program Files\OpenNI2\Lib;C:\Program Files\PCL 1.9.1\3rdParty\Qhull\lib;C:\VTK\lib;$(LibraryPath)</LibraryPath>
+    <_PropertySheetDisplayName>PropertySheet</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
